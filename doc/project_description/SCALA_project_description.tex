@@ -1,0 +1,97 @@
+% -----------------------------------------------------------------------
+% --- DOCUMENT ---
+% -----------------------------------------------------------------------
+\documentclass[11pt, a4paper, french, twoside]{article}
+
+% -----------------------------------------------------------------------
+% --- PACKAGE ---
+% -----------------------------------------------------------------------
+\usepackage[french]{babel}
+
+% Font
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+
+% Marge du document
+\usepackage[top=3.5cm,
+	bottom=3cm,
+	left=2cm,
+	right=2cm,
+	footskip=1.5cm,
+	headheight=1.5cm,
+	headsep=0.9cm]{geometry}
+
+% Gérer les positionnement d'images
+\usepackage{float}
+
+% Import de fichier externe
+\usepackage{graphicx}
+
+% Mise en forme des URL
+\usepackage{url}
+
+% Informations sur un document compilé en PDF et les liens externes / internes
+\usepackage{hyperref}
+
+% Pour les entêtes
+\usepackage{fancyhdr}
+
+% -----------------------------------------------------------------------
+% --- INFORMATION SUR LE DOCUMENT
+% -----------------------------------------------------------------------
+
+% Information sur le document
+\hypersetup{
+	pdfauthor = {Kirushnapillai Sathiya, Monteverde Mathieu, Zucca Michela},                    % Auteurs
+	pdftitle = {Project Cours Scala},                         % Titre du document
+	pdfsubject = {Description du projet},                % Sujet
+	pdfstartview={FitH}}                            % ajuste la page à la largueur de l'écran
+
+% -----------------------------------------------------------------------
+% --- EN-TETE ET PIED DE PAGE ---
+% -----------------------------------------------------------------------
+\pagestyle{fancy}
+\fancyhf{} % Supprime les entetes et pieds de page existants
+
+\fancyhead[LE,RO]{Description du projet\\}
+\fancyhead[LO]{\includegraphics[width=4cm]{images/logo_heig.png}}
+\fancyfoot[LE,RO]{\thepage{}}
+\fancyfoot[RE]{Kirushnapillai Sathiya, Monteverde Mathieu, Zucca Michela}
+\fancyfoot[LO]{Project Cours Scala}
+\renewcommand{\footrulewidth}{1pt}
+
+
+\title{Project Cours Scala \\ Description du projet}
+\author{Kirushnapillai Sathiya, Monteverde Mathieu, Zucca Michela}
+\date{2018}
+
+
+\begin{document}
+	\selectlanguage{french}
+	\graphicspath{ {images/} }
+	
+	% Espacement entre les lignes
+	\newcommand{\HRule}{\rule{\linewidth}{0.5mm}}
+	
+	% Page de garde
+	\input{./partials/title.tex}
+	\newpage~
+	
+	% Empty page 
+	\thispagestyle{empty}
+	\newpage
+	
+	% Recommencer la numérotation des pages à "1"
+	\setcounter{page}{1}
+	\newpage
+	
+	\section{Contexte}
+	\label{sec:contexte}
+	\section{Description}
+	\label{sec:description}
+	\section{Structure}
+	\label{sec:structure}
+	
+	% Espacement des paragraphes
+	\setlength{\parskip}{0.2cm}
+\end{document}
