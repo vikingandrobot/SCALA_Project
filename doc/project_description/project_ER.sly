@@ -33,7 +33,7 @@
       <attribute const="false" defaultValue="" isStatic="false" name="id{id}" type="void" visibility="PRIVATE"/>
       <attribute const="false" defaultValue="" isStatic="false" name="name" type="void" visibility="PRIVATE"/>
     </entity>
-    <association aggregation="NONE" direction="BIDIRECTIONAL" id="1467" name="authored">
+    <association aggregation="NONE" direction="BIDIRECTIONAL" id="1467" name="writes">
       <role componentId="1401" name="" visibility="PRIVATE">
         <multiplicity>
           <min>0</min>
@@ -327,7 +327,7 @@
       <labelAssociation>
         <x>55</x>
         <y>445</y>
-        <w>59</w>
+        <w>40</w>
         <h>17</h>
       </labelAssociation>
       <roleAssociation>
