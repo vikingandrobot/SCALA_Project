@@ -85,6 +85,9 @@
 	\setcounter{page}{1}
 	\newpage
 	
+	% Espacement des paragraphes
+	\setlength{\parskip}{0.2cm}
+	
 	\section{Contexte}
 	\label{sec:contexte}
 		Ce projet s'effectue dans le cadre du cours SCALA 2018. L'objectif est de réaliser une application Web en utilisant la technologie Scala Play pour le back-end et Slick pour la base de données. Le choix de la technologie front-end est libre.
@@ -102,14 +105,17 @@
 		
 	\section{Structure}
 	\label{sec:structure}
-		La figure \ref{fig:er} illustre le schéma entité-relation de la base de données du projet.
-		\begin{figure}[H]
+		La figure \ref{fig:er} illustre le schéma entité-relation de la base de données du projet. L'application comporte des utilisateurs (User), des organisations (Organization) et des évenements (Event). Pour chaque entité, les opérations de base (CRUD) seront fournies : Afficher, créer, modifier et supprimer. Cependant, seuls les utilisateurs liés à une organisation peuvent créer, modifier et supprimer des événements. Par conséquent, l'application devra gérer deux types d'utilisateur dans sa logique métier.
+		
+		Pour cette première ébauche, chaque événement possède un ou plusieurs thèmes (Theme) qui permettront aux visiteurs de filtrer leurs recherches. Les thèmes permettent également aux utilisateurs inscrits d'être notifié d'un nouvel événement selon leurs préférences (Ce dernier point est pour l'instant optionnel).
+		
+		Et enfin, l'application permettra également aux utilisateurs inscrits de commenter un événement.
+		
+		\begin{figure}[h]
 			\centering
 			\includegraphics[width=0.8\linewidth]{images/project_ER.png}
 			\caption{Schéma entité-relation de la base de données}
 			\label{fig:er}
 		\end{figure}
 	
-	% Espacement des paragraphes
-	\setlength{\parskip}{0.2cm}
 \end{document}
