@@ -92,13 +92,85 @@
 	
 		\subsection{Buts}
 		\label{subsec:buts}
-		L'idée de ce projet est de proposer une plateforme Web permettant de partager des événements avec ses utilisateurs. Un utilisateur inscrit au préalable ()et faisant partie d'une organisation) pourra enregistrer des événements (par exemple un concert, une journée portes-ouvertes, un festival, etc.) en spécifiant des informations comme par exemple la localisation (coordonnées GPS ou adresse), une description, une ou plusieurs dates et des horaires.
+		L'idée de ce projet est de proposer une plateforme Web permettant de partager des événements avec ses utilisateurs. Un utilisateur inscrit au préalable (subsequenceset faisant partie d'une organisation) pourra enregistrer des événements (par exemple un concert, une journée portes-ouvertes, un festival, etc.) en spécifiant des informations comme par exemple la localisation (coordonnées GPS ou adresse), une description, une ou plusieurs dates et des horaires.
 		
 		Un visiteur du site pourra ensuite rechercher les événements situés dans une certaines zone (par exemple dans un rayon de 10km autour de Lausanne) en spécifiant différents paramètres comme la date ou l'heure. 
 		
 		Le but est d'offrir un service indépendant de tout réseau social permettant à ses utilisateurs de trouver facilement des événements culturels ou festifs autour d'eux. 
 		
-		Une organisation est une entité (entreprise, commune, association, etc.) qui peut-être certifiée. Cela permet un certain contrôle sur le type d'événements qui sont créées (éviter les faux événements, les fêtes d'anniversaire, etc.). Dans un application future il est envisageable d'élargir le spectre des possibilités.
+		Une organisation est une entité (entreprise, commune, association, etc.) qui peut-être certifiée. Cela permet un certain contrôle sur le type d'événements qui sont créées (éviter les faux événements, les fêtes d'anniversaire, etc.).
+	
+	\section{Fonctionnalités}
+	\label{sec:fonctionnalites}
+		Cette section liste les fonctionnalités qu'offrira la plateforme pour les différents acteurs. 
+		
+		\subsection{Visiteurs}
+		\label{subsec:visiteurs}
+			Un utilisateur non-authentifié de l'application Web pourra: 
+			
+			\begin{itemize}
+				\item Voir une liste d'événements
+				\item Filtrer une liste d'événements par data
+					\begin{itemize}
+						\item Choisir une date exacte
+						\item Choisir une plage avec date de début et date de fin
+					\end{itemize}
+				\item Filtrer une liste d'événements par lieu géographique
+					\begin{itemize}
+						\item Choisir une ville départ
+						\item Choisir un rayon de recherche autour de cette ville
+					\end{itemize}
+				\item Rechercher un événement
+					\begin{itemize}
+						\item Recherche par nom d'événement
+						\item Recherche par organisation
+					\end{itemize}
+				\item Filtrer une liste d'événement par thème
+				\item Voir le détail d'un événement
+				\item Créer un compte sur la plateforme
+					\begin{itemize}
+						\item E-mail
+						\item Mot de passe
+						\item Nom d'utilisateur
+						\item Prénom
+						\item Nom de famille
+					\end{itemize}
+			\end{itemize}
+		
+		\subsection{Utilisateur inscrit}
+		\label{subsec:utilisateur_inscrit}
+			Un utilisateur authentifié pourra:
+			
+			\begin{itemize}
+				\item Afficher son profil
+				\item Modifier les informations de son profil
+				\item Supprimer son profil
+				\item Créer une organisation
+					\begin{itemize}
+						\item Spécifer le type d'organisation (Entrprise, association, ville, etc.)
+						\item Spécifier le nom de l'organisation
+						\item Spécifier l'adresse
+						\item D'autres informations si nécessaire
+					\end{itemize}
+				\item Afficher les informations des organisations dont il fait partie
+				\item Ajouter des utilisateurs à une organisation
+				\item Modifier les informations des organisations dont il fait partie
+				\item Supprimer une organisation
+				\item Créer un événement au nom d'une organisation dont il fait partie
+					\begin{itemize}
+						\item Titre
+						\item Description
+						\item Prix
+						\item Lieu (Adresse ou coordonées géographiques)
+						\item Date de début
+						\item Date de fin
+						\item Horaires
+						\item Organisation
+						\item Thèmes de l'événement
+					\end{itemize}
+				\item Modifier un événement d'une organisation dont il fait partie
+				\item Supprimer un événement d'une organisation dont il fait partie
+			\end{itemize}
 		
 	\section{Structure}
 	\label{sec:structure}
