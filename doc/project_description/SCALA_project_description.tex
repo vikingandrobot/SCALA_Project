@@ -44,7 +44,7 @@
 \hypersetup{
 	pdfauthor = {Kirushnapillai Sathiya, Monteverde Mathieu, Zucca Michela},                    % Auteurs
 	pdftitle = {Project Cours Scala},                         % Titre du document
-	pdfsubject = {Description du projet},                % Sujet
+	pdfsubject = {Cahier des charges},                % Sujet
 	pdfstartview={FitH}}                            % ajuste la page à la largueur de l'écran
 
 % -----------------------------------------------------------------------
@@ -53,7 +53,7 @@
 \pagestyle{fancy}
 \fancyhf{} % Supprime les entetes et pieds de page existants
 
-\fancyhead[LE,RO]{Description du projet\\}
+\fancyhead[LE,RO]{Cahier des charges\\}
 \fancyhead[LO]{\includegraphics[width=4cm]{images/logo_heig.png}}
 \fancyfoot[LE,RO]{\thepage{}}
 \fancyfoot[RE]{Kirushnapillai Sathiya, Monteverde Mathieu, Zucca Michela}
@@ -61,7 +61,7 @@
 \renewcommand{\footrulewidth}{1pt}
 
 
-\title{Project Cours Scala \\ Description du projet}
+\title{Project Cours Scala \\ Cahier des charges}
 \author{Kirushnapillai Sathiya, Monteverde Mathieu, Zucca Michela}
 \date{2018}
 
@@ -104,73 +104,116 @@
 	\label{sec:fonctionnalites}
 		Cette section liste les fonctionnalités qu'offrira la plateforme pour les différents acteurs. 
 		
+		\subsection{Priorités}
+		\label{subsec:priorites}
+		
+		\begin{itemize}
+			\item [1] - Obligatoire
+			\item [2] - Obligatoire si aucun retard dû à l'apprentissage
+			\item [3] - Optionnel ou futur
+		\end{itemize}
+		
 		\subsection{Visiteurs}
 		\label{subsec:visiteurs}
 			Un utilisateur non-authentifié de l'application Web pourra: 
 			
-			\begin{itemize}
-				\item Voir une liste d'événements
-				\item Filtrer une liste d'événements par data
-					\begin{itemize}
-						\item Choisir une date exacte
-						\item Choisir une plage avec date de début et date de fin
-					\end{itemize}
-				\item Filtrer une liste d'événements par lieu géographique
-					\begin{itemize}
-						\item Choisir une ville départ
-						\item Choisir un rayon de recherche autour de cette ville
-					\end{itemize}
-				\item Rechercher un événement
-					\begin{itemize}
-						\item Recherche par nom d'événement
-						\item Recherche par organisation
-					\end{itemize}
-				\item Filtrer une liste d'événement par thème
-				\item Voir le détail d'un événement
-				\item Créer un compte sur la plateforme
-					\begin{itemize}
-						\item E-mail
-						\item Mot de passe
-						\item Nom d'utilisateur
-						\item Prénom
-						\item Nom de famille
-					\end{itemize}
-			\end{itemize}
+			\subsubsection{Affichage et tri d'événements}
+			\label{subsubsec:affichage_tri_evenements}
+				
+				\textbf{Priorité [1]}
+			
+				\begin{itemize}
+					\item Voir une liste d'événements
+					\item Filtrer une liste d'événements par data
+						\begin{itemize}
+							\item Choisir une date exacte
+							\item Choisir une plage avec date de début et date de fin
+						\end{itemize}
+					\item Filtrer une liste d'événements par lieu géographique
+						\begin{itemize}
+							\item Choisir une ville départ
+							\item Choisir un rayon de recherche autour de cette ville
+						\end{itemize}
+					\item Rechercher un événement
+						\begin{itemize}
+							\item Recherche par nom d'événement
+							\item Recherche par organisation
+						\end{itemize}
+					\item Filtrer une liste d'événement par thème
+					\item Voir le détail d'un événement
+				\end{itemize}
+			
+			\subsubsection{Inscription}
+			\label{subsubsec:inscription}
+			
+				\textbf{Priorité [1]}
+			
+				\begin{itemize}
+					\item Créer un compte sur la plateforme
+						\begin{itemize}
+							\item E-mail
+							\item Mot de passe
+							\item Nom d'utilisateur
+							\item Prénom
+							\item Nom de famille
+						\end{itemize}
+				\end{itemize}
 		
 		\subsection{Utilisateur inscrit}
 		\label{subsec:utilisateur_inscrit}
 			Un utilisateur authentifié pourra:
 			
-			\begin{itemize}
-				\item Afficher son profil
-				\item Modifier les informations de son profil
-				\item Supprimer son profil
-				\item Créer une organisation
-					\begin{itemize}
-						\item Spécifer le type d'organisation (Entrprise, association, ville, etc.)
-						\item Spécifier le nom de l'organisation
-						\item Spécifier l'adresse
-						\item D'autres informations si nécessaire
-					\end{itemize}
-				\item Afficher les informations des organisations dont il fait partie
-				\item Ajouter des utilisateurs à une organisation
-				\item Modifier les informations des organisations dont il fait partie
-				\item Supprimer une organisation
-				\item Créer un événement au nom d'une organisation dont il fait partie
-					\begin{itemize}
-						\item Titre
-						\item Description
-						\item Prix
-						\item Lieu (Adresse ou coordonées géographiques)
-						\item Date de début
-						\item Date de fin
-						\item Horaires
-						\item Organisation
-						\item Thèmes de l'événement
-					\end{itemize}
-				\item Modifier un événement d'une organisation dont il fait partie
-				\item Supprimer un événement d'une organisation dont il fait partie
-			\end{itemize}
+			\subsubsection{Profil}
+			\label{subsubsec:profil}
+				
+				\textbf{Priorité [1]}
+			
+				\begin{itemize}
+					\item Afficher son profil
+					\item Modifier les informations de son profil
+					\item Supprimer son profil
+				\end{itemize}
+			
+			\subsubsection{Organisations}
+			\label{subsubsec:organisations}
+				
+				\textbf{Priorité [1]}
+			
+				\begin{itemize}
+					\item Créer une organisation
+						\begin{itemize}
+							\item Spécifer le type d'organisation (Entrprise, association, ville, etc.)
+							\item Spécifier le nom de l'organisation
+							\item Spécifier l'adresse
+							\item D'autres informations si nécessaire
+						\end{itemize}
+					\item Afficher les informations des organisations dont il fait partie
+					\item Ajouter des utilisateurs à une organisation
+					\item Modifier les informations des organisations dont il fait partie
+					\item Supprimer une organisation
+				\end{itemize}
+			
+			\subsubsection{Evénements}
+			\label{subsubsec:evenements}
+				
+				\textbf{Priorité [1]}
+			
+				\begin{itemize}
+					\item Créer un événement au nom d'une organisation dont il fait partie
+						\begin{itemize}
+							\item Titre
+							\item Description
+							\item Prix
+							\item Lieu (Adresse ou coordonées géographiques)
+							\item Date de début
+							\item Date de fin
+							\item Horaires
+							\item Organisation
+							\item Thèmes de l'événement
+						\end{itemize}
+					\item Modifier un événement d'une organisation dont il fait partie
+					\item Supprimer un événement d'une organisation dont il fait partie
+				\end{itemize}
 		
 	\section{Structure}
 	\label{sec:structure}
