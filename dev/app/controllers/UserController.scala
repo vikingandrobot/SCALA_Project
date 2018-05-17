@@ -3,15 +3,18 @@ package controllers
 import dao.UserDAO
 import javax.inject.{Inject, Singleton}
 import models.User
+import models.SignUpForm
 import play.api.libs.json._
-import play.api.libs.json.Reads._
+import play.api.libs.json.Reads.minLength
 import play.api.libs.functional.syntax._
-import play.api.mvc.{AbstractController, ControllerComponents}
+import play.api.mvc._
 
 import scala.concurrent.ExecutionContext.Implicits.global
 
+
+
 @Singleton
-class UserController @Inject()(cc: ControllerComponents, userDAO: UserDAO) extends AbstractController(cc) {
+class UserController @Inject()(cc: MessagesControllerComponents, userDAO: UserDAO) extends MessagesAbstractController(cc) {
 
   // Convert a User-model object into a JsValue representation, which means that we serialize it into JSON.
   implicit val userToJson: Writes[User] = (
@@ -38,6 +41,15 @@ class UserController @Inject()(cc: ControllerComponents, userDAO: UserDAO) exten
     ) (User.apply _)
 
 
+  // Form post action to set
+  private val postUrl = routes.UserController.join()
+
+
+  def validateJson[A: Reads] = parse.json.validate(
+    _.validate[A].asEither.left.map(e => BadRequest(JsError.toJson(e)))
+  )
+
+
   /**
     * Get the list of all existing users, then return it.
     * The Action.async is used because the request is asynchronous.
@@ -47,4 +59,26 @@ class UserController @Inject()(cc: ControllerComponents, userDAO: UserDAO) exten
     userList map (s => Ok(Json.toJson(s)))
   }
 
+  /**
+    * Display the sign up form
+    */
+  def joinPage = Action { implicit request: MessagesRequest[AnyContent] =>
+    Ok(views.html.join(SignUpForm.form, postUrl))
+  }
+
+  /**
+    * Post action for the sign up form
+    */
+  def join = Action { implicit request =>
+
+    SignUpForm.form.bindFromRequest.fold(
+      formWithErrors => {
+        // binding failure, you retrieve the form containing errors:
+        BadRequest(views.html.join(formWithErrors, postUrl))
+      },
+      formData => {
+        Ok(formData.toString)
+      }
+    )
+  }
 }

@@ -1,0 +1,22 @@
+@(form: Form[models.UserData], postUrl: Call)(implicit request: MessagesRequestHeader)
+
+@main("Join") {
+
+    <h1>Join Project</h1>
+
+    @helper.form(postUrl) {
+        @helper.CSRF.formField
+
+        @helper.inputText(form("firstName"), '_label -> "First name")
+
+        @helper.inputText(form("lastName"), '_label -> "Last name")
+
+        @helper.inputText(form("email"), '_label -> "Email")
+
+        @helper.inputText(form("username"), '_label -> "Username")
+
+        @helper.inputPassword(form("password"), '_label -> "Password")
+
+        <button>Sign up</button>
+    }
+}
