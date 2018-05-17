@@ -7,15 +7,15 @@
     @helper.form(postUrl) {
         @helper.CSRF.formField
 
-        @helper.inputText(form("firstName"), '_label -> "First name")
+        @helper.inputText(form("firstName"), '_label -> "First name", '_showConstraints -> false)
 
-        @helper.inputText(form("lastName"), '_label -> "Last name")
+        @helper.inputText(form("lastName"), '_label -> "Last name", '_showConstraints -> false)
 
-        @helper.inputText(form("email"), '_label -> "Email")
+        @helper.inputText(form("email"), '_label -> "Email", '_showConstraints -> false)
 
-        @helper.inputText(form("username"), '_label -> "Username")
+        @helper.inputText(form("username"), '_label -> "Username", '_showConstraints -> false)
 
-        @helper.inputPassword(form("password"), '_label -> "Password")
+        @helper.inputPassword(form("password"), '_label -> "Password", '_showConstraints -> false)
 
         <button>Sign up</button>
     }
