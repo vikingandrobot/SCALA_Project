@@ -4,6 +4,7 @@ import dao.UserDAO
 import javax.inject.{Inject, Singleton}
 import models.User
 import models.SignUpForm
+import org.mindrot.jbcrypt.BCrypt
 import play.api.libs.json._
 import play.api.libs.json.Reads.minLength
 import play.api.libs.functional.syntax._
@@ -71,13 +72,22 @@ class UserController @Inject()(cc: MessagesControllerComponents, userDAO: UserDA
     */
   def join = Action { implicit request =>
 
+    // Valid the form data
     SignUpForm.form.bindFromRequest.fold(
       formWithErrors => {
-        // binding failure, you retrieve the form containing errors:
+        // Resend the form with error
         BadRequest(views.html.join(formWithErrors, postUrl))
       },
       formData => {
-        Ok(formData.toString)
+
+        // Hash the password
+        val passwordHash = BCrypt.hashpw(formData.password, BCrypt.gensalt)
+
+        // Create a new user and save it
+        val newUser = User(None, formData.firstName, formData.lastName, formData.email, formData.username, passwordHash)
+        val user = userDAO.insert(newUser)
+
+        Ok(user.toString)
       }
     )
   }

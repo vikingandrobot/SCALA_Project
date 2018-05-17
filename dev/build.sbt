@@ -14,6 +14,8 @@ libraryDependencies ++= Seq( jdbc , ehcache , ws , specs2 % Test , guice )
 
 libraryDependencies += "com.typesafe.play" %% "play-slick" % "3.0.0"
 libraryDependencies += "mysql" % "mysql-connector-java" % "5.1.24"
+libraryDependencies += "org.mindrot" % "jbcrypt" % "0.4"
+
 
 unmanagedResourceDirectories in Test <+=  baseDirectory ( _ /"target/web/public/test" )  
 
