@@ -59,6 +59,10 @@ class UserDAO @Inject()(protected val dbConfigProvider: DatabaseConfigProvider)(
   def findById(id: Long): Future[Option[User]] =
     db.run(users.filter(_.id === id).result.headOption)
 
+  /** Retrieve a user from the username. */
+  def findByUsername(username: String): Future[Option[User]] =
+    db.run(users.filter(_.username === username).result.headOption)
+
   /** Insert a new user, then return it. */
   def insert(user: User): Future[User] = {
     val insertQuery = users returning users.map(_.id) into ((user, id) => user.copy(Some(id)))

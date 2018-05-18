@@ -10,6 +10,9 @@ GET     /users                      controllers.UserController.getUsers
 GET     /join                       controllers.UserController.joinPage
 POST    /join                       controllers.UserController.join
 
+GET     /login                      controllers.UserController.loginPage
+POST    /login                      controllers.UserController.login
+
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.versioned(path="/public", file: Asset)
 

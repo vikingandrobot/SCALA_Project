@@ -2,8 +2,7 @@ package controllers
 
 import dao.UserDAO
 import javax.inject.{Inject, Singleton}
-import models.User
-import models.SignUpForm
+import models.{LoginForm, SignUpForm, User}
 import org.mindrot.jbcrypt.BCrypt
 import play.api.libs.json._
 import play.api.libs.json.Reads.minLength
@@ -13,9 +12,8 @@ import play.api.mvc._
 import scala.concurrent.ExecutionContext.Implicits.global
 
 
-
 @Singleton
-class UserController @Inject()(cc: MessagesControllerComponents, userDAO: UserDAO) extends MessagesAbstractController(cc) {
+class UserController @Inject()(cc: ControllerComponents, userDAO: UserDAO) extends AbstractController(cc) with play.api.i18n.I18nSupport {
 
   // Convert a User-model object into a JsValue representation, which means that we serialize it into JSON.
   implicit val userToJson: Writes[User] = (
@@ -43,7 +41,8 @@ class UserController @Inject()(cc: MessagesControllerComponents, userDAO: UserDA
 
 
   // Form post action to set
-  private val postUrl = routes.UserController.join()
+  private val postJoinUrl = routes.UserController.join()
+  private val postLoginUrl = routes.UserController.login()
 
 
   def validateJson[A: Reads] = parse.json.validate(
@@ -61,14 +60,15 @@ class UserController @Inject()(cc: MessagesControllerComponents, userDAO: UserDA
   }
 
   /**
-    * Display the sign up form
+    * Display the sign up form.
     */
-  def joinPage = Action { implicit request: MessagesRequest[AnyContent] =>
-    Ok(views.html.join(SignUpForm.form, postUrl))
+  def joinPage = Action { implicit request =>
+    Ok(views.html.join(SignUpForm.form, postJoinUrl))
   }
 
   /**
-    * Post action for the sign up form
+    * Post action for the sign up form.
+    * Valid the data and create a new user.
     */
   def join = Action { implicit request =>
 
@@ -76,7 +76,7 @@ class UserController @Inject()(cc: MessagesControllerComponents, userDAO: UserDA
     SignUpForm.form.bindFromRequest.fold(
       formWithErrors => {
         // Resend the form with error
-        BadRequest(views.html.join(formWithErrors, postUrl))
+        BadRequest(views.html.join(formWithErrors, postJoinUrl))
       },
       formData => {
 
@@ -90,5 +90,44 @@ class UserController @Inject()(cc: MessagesControllerComponents, userDAO: UserDA
         Ok(user.toString)
       }
     )
+  }
+
+  /**
+    * Display the login form.
+    */
+  def loginPage = Action { implicit request =>
+    Ok(views.html.login(LoginForm.form, postLoginUrl))
+  }
+
+  /**
+    * Post action for the login form.
+    * Valid the data and check if the username and the password exist.
+    */
+  def login = Action { implicit request =>
+
+    Ok("TODO")
+
+    // Valid the form data
+    /*LoginForm.form.bindFromRequest.fold(
+      formWithErrors => {
+        // Resend the form with error
+        BadRequest(views.html.login(formWithErrors, postLoginUrl))
+      },
+      formData => {
+
+        // Get user by username
+        val optionalUser = userDAO.findByUsername(formData.username)
+
+        optionalUser.map {
+          case None => {
+            // Resend the form with error
+            val formWithErrors = LoginForm.form.withGlobalError("User or password wrong")
+            BadRequest(views.html.login(formWithErrors, postLoginUrl))
+          }
+          case Some(u) if BCrypt.checkpw(formData.password, u.password) => Ok("Looool")
+        }
+
+      }
+    )*/
   }
 }
