@@ -10,7 +10,7 @@ CREATE TABLE users (
   lastName VARCHAR(255) NOT NULL,
   email VARCHAR(255) NOT NULL,
   username VARCHAR(255) NOT NULL UNIQUE,
-  pass_word VARCHAR(255) NOT NULL,
+  password VARCHAR(255) NOT NULL,
   
   PRIMARY KEY (id)
 );
@@ -18,15 +18,15 @@ CREATE TABLE users (
 DROP TABLE IF EXISTS organizations;
 CREATE TABLE organizations (
 	id INT(11) NOT NULL AUTO_INCREMENT,
-    type_org VARCHAR(255) NOT NULL,
-    name_org VARCHAR (255) NOT NULL,
+    type VARCHAR(255) NOT NULL,
+    name VARCHAR (255) NOT NULL,
     adress VARCHAR (255) NOT NULL, 
     
 	PRIMARY KEY (id)
 );
 
-DROP TABLE IF EXISTS evenments;
-CREATE TABLE evenments (
+DROP TABLE IF EXISTS events;
+CREATE TABLE events (
 	id INT(11) NOT NULL AUTO_INCREMENT,
 	title VARCHAR(255) NOT NULL, 
     description VARCHAR(255) NOT NULL,
@@ -60,11 +60,11 @@ CREATE TABLE comments (
 	id INT(11) NOT NULL AUTO_INCREMENT,
     message VARCHAR(255) NOT NULL,
     user_id INT(11) NOT NULL,
-    evenment_id INT(11) NOT NULL,
+    event_id INT(11) NOT NULL,
     
 	PRIMARY KEY (id),
 	CONSTRAINT fx_cmt_user FOREIGN KEY (user_id) REFERENCES users(id),
-	CONSTRAINT fx_cmt_evenment FOREIGN KEY (evenment_id) REFERENCES evenments(id)
+	CONSTRAINT fx_cmt_event FOREIGN KEY (event_id) REFERENCES events(id)
 );
 
 -- Link organization Managed by user
@@ -84,11 +84,11 @@ CREATE TABLE notifications(
 	id INT(11) NOT NULL AUTO_INCREMENT,
     seen BOOLEAN NOT NULL,
 	user_id INT(11) NOT NULL,
-    evenment_id INT(11) NOT NULL,
+    event_id INT(11) NOT NULL,
 	
     PRIMARY KEY (id),
     CONSTRAINT fx_ntf_user FOREIGN KEY (user_id) REFERENCES users(id),
-	CONSTRAINT fx_ntf_evenment FOREIGN KEY (evenment_id) REFERENCES evenments(id)
+	CONSTRAINT fx_ntf_event FOREIGN KEY (event_id) REFERENCES events(id)
 );
 
 DROP TABLE IF EXISTS themes;
