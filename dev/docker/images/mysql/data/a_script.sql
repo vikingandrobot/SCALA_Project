@@ -51,7 +51,7 @@ CREATE TABLE favorites (
     user_id INT(11) NOT NULL,
     
     PRIMARY KEY (id),
-    CONSTRAINT fx_fvt_event FOREIGN KEY (event_id) REFERENCES evenments(id),
+    CONSTRAINT fx_fvt_event FOREIGN KEY (event_id) REFERENCES events(id),
 	CONSTRAINT fx_fvt_user FOREIGN KEY (user_id) REFERENCES users(id)
 );
 
@@ -94,7 +94,7 @@ CREATE TABLE notifications(
 DROP TABLE IF EXISTS themes;
 CREATE TABLE themes (
 	id INT(11) NOT NULL AUTO_INCREMENT,
-    name_them VARCHAR(255) NOT NULL,
+    name VARCHAR(255) NOT NULL,
 	PRIMARY KEY (id)
 );
 
@@ -118,6 +118,6 @@ CREATE TABLE themes_events (
     theme_id INT(11) NOT NULL,
     
     PRIMARY KEY (id),
-    CONSTRAINT fx_te_event FOREIGN KEY (event_id) REFERENCES evenments(id),
+    CONSTRAINT fx_te_event FOREIGN KEY (event_id) REFERENCES events(id),
     CONSTRAINT fx_te_theme FOREIGN KEY (theme_id) REFERENCES themes(id)
 );

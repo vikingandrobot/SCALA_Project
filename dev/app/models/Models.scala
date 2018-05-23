@@ -8,3 +8,7 @@ case class User(
    email: String,
    username: String,
    password: String)
+
+case class Theme(
+  id: Option[Long],
+  name: String)
