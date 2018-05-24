@@ -1,20 +1,22 @@
 @*
- * This template takes a single argument, a String containing a
- * message to display.
- *@
-@(message: String)
+* This template takes a single argument, a String containing a
+* message to display.
+*@
+@()(implicit request: play.api.mvc.RequestHeader)
 
 @*
- * Call the `main` template with two arguments. The first
- * argument is a `String` with the title of the page, the second
- * argument is an `Html` object containing the body of the page.
- *@
+* Call the `main` template with two arguments. The first
+* argument is a `String` with the title of the page, the second
+* argument is an `Html` object containing the body of the page.
+*@
 @main("Welcome to Play") {
 
-    @*
-     * Get an `Html` object by calling the built-in Play welcome
-     * template and passing a `String` message.
-     *@
-    @welcome(message, style = "scala")
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <h1>Find what events are around you!</h1>
+            </div>
+        </div>
+    </div>
 
 }

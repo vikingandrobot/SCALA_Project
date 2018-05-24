@@ -80,7 +80,7 @@ class UserController @Inject()(cc: ControllerComponents, userDAO: UserDAO) exten
         optionalUser map {
           case Some(u) if BCrypt.checkpw(formData.password, u.password) =>
             Redirect(routes.HomeController.index())
-          // TODO : Session and flash session
+              .withSession("connected" -> u.username)
           case _ =>
             // Resend the form with error
             val formWithErrors = LoginForm.form.withGlobalError("User or password wrong")
