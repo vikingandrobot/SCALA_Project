@@ -8,6 +8,7 @@ import play.api.mvc._
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
+import scala.util.{Failure, Success}
 
 
 @Singleton
@@ -29,13 +30,15 @@ class UserController @Inject()(cc: ControllerComponents, userDAO: UserDAO) exten
     * Post action for the sign up form.
     * Valid the data and create a new user.
     */
-  def join = Action { implicit request =>
+  def join = Action.async { implicit request =>
 
     // Valid the form data
     SignUpForm.form.bindFromRequest.fold(
       formWithErrors => {
-        // Resend the form with error
-        BadRequest(views.html.join(formWithErrors, postJoinUrl))
+        Future {
+          // Resend the form with error
+          BadRequest(views.html.join(formWithErrors, postJoinUrl))
+        }
       },
       formData => {
 
@@ -46,7 +49,13 @@ class UserController @Inject()(cc: ControllerComponents, userDAO: UserDAO) exten
         val newUser = User(None, formData.firstName, formData.lastName, formData.email, formData.username, passwordHash)
         val user = userDAO.insert(newUser)
 
-        Ok(user.toString)
+        // TODO: Check if an error occurred (e.g. username already in the database)
+
+        user map {
+          u =>
+            Redirect(routes.HomeController.index())
+              .withSession("connected" -> u.username)
+        }
       }
     )
   }
