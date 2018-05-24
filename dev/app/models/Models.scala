@@ -12,3 +12,8 @@ case class User(
 case class Theme(
   id: Option[Long],
   name: String)
+
+case class Interest(
+  id: Option[Long],
+  userId: Long,
+  themeId: Long)
