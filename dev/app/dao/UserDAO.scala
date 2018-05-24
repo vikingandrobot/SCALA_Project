@@ -17,7 +17,7 @@ trait UserComponent {
   import profile.api._
 
   // This class convert the database's user table in a object-oriented entity: the User model.
-  class UserTable(tag: Tag) extends Table[User](tag, "user") {
+  class UserTable(tag: Tag) extends Table[User](tag, "users") {
     def id = column[Long]("ID", O.PrimaryKey, O.AutoInc) // Primary key, auto-incremented
 
     def firstName = column[String]("FIRSTNAME")

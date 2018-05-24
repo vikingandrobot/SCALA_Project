@@ -5,7 +5,6 @@
 
 # An example controller showing a sample home page
 GET     /                           controllers.HomeController.index
-GET     /users                      controllers.UserController.getUsers
 
 GET     /join                       controllers.UserController.joinPage
 POST    /join                       controllers.UserController.join
