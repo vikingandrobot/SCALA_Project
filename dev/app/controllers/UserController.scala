@@ -10,6 +10,7 @@ import play.api.libs.functional.syntax._
 import play.api.mvc._
 
 import scala.concurrent.ExecutionContext.Implicits.global
+import scala.concurrent.Future
 
 
 @Singleton
@@ -103,31 +104,31 @@ class UserController @Inject()(cc: ControllerComponents, userDAO: UserDAO) exten
     * Post action for the login form.
     * Valid the data and check if the username and the password exist.
     */
-  def login = Action { implicit request =>
-
-    Ok("TODO")
-
+  def login = Action.async { implicit request =>
     // Valid the form data
-    /*LoginForm.form.bindFromRequest.fold(
-      formWithErrors => {
-        // Resend the form with error
-        BadRequest(views.html.login(formWithErrors, postLoginUrl))
-      },
-      formData => {
+    LoginForm.form.bindFromRequest.fold(
 
-        // Get user by username
+      // On fail return the form with errors
+      formWithErrors => {
+        Future {
+          BadRequest(views.html.login(formWithErrors, postLoginUrl))
+        }
+      },
+
+      // On success compare the username and password on database
+      formData => {
         val optionalUser = userDAO.findByUsername(formData.username)
 
-        optionalUser.map {
-          case None => {
+        optionalUser map {
+          case Some(u) if BCrypt.checkpw(formData.password, u.password) =>
+            Redirect(routes.HomeController.index())
+            // TODO : Session and flash session
+          case _ =>
             // Resend the form with error
             val formWithErrors = LoginForm.form.withGlobalError("User or password wrong")
             BadRequest(views.html.login(formWithErrors, postLoginUrl))
-          }
-          case Some(u) if BCrypt.checkpw(formData.password, u.password) => Ok("Looool")
         }
-
       }
-    )*/
+    )
   }
 }
