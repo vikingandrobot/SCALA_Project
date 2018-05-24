@@ -16,3 +16,6 @@ def action = Action.async { implicit request =>
     ...
 }
 ```
+
+## Connected user session
+A session is created when a user is logged. The session's name is `connected` and it provides the username of the connected user.
