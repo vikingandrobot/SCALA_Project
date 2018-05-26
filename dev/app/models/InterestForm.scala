@@ -28,3 +28,18 @@ object DeleteInterestForm {
     )(DeleteInterestData.apply)(DeleteInterestData.unapply)
   )
 }
+
+case class FindData (
+  id: Option[Long],
+  userId: Option[Long],
+  themeId: Option[Long])
+
+object FindForm {
+  val form: Form[FindData] = Form(
+    mapping(
+      "id" -> optional(longNumber),
+      "userId" -> optional(longNumber),
+      "themeId" -> optional(longNumber)
+    )(FindData.apply)(FindData.unapply)
+  )
+}

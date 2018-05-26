@@ -1,18 +1,20 @@
 package controllers
 
-
-import akka.http.scaladsl.model.HttpHeader.ParsingResult.Ok
 import dao.InterestDAO
 import javax.inject.{Inject, Singleton}
-import models.{DeleteInterestForm, InsertInterestForm, Interest}
+import models.{DeleteInterestForm, FindForm, InsertInterestForm, Interest}
 import play.api.libs.functional.syntax._
 import play.api.libs.json._
 import play.api.mvc.{AbstractController, Action, ControllerComponents}
+import scala.concurrent.duration.Duration
+import scala.concurrent.{ Await, Future }
+
 
 import scala.concurrent.ExecutionContext.Implicits.global
 
 @Singleton
-class InterestController @Inject()(cc: ControllerComponents, interestDAO: InterestDAO) extends AbstractController(cc) with play.api.i18n.I18nSupport {
+class InterestController @Inject()(cc: ControllerComponents, interestDAO: InterestDAO)
+  extends AbstractController(cc) with play.api.i18n.I18nSupport {
 
   implicit val themeToJson: Writes[Interest] = (
     (JsPath \ "id").write[Option[Long]] and
@@ -26,10 +28,6 @@ class InterestController @Inject()(cc: ControllerComponents, interestDAO: Intere
         (JsPath \ "themeId").read[Long]
     )(Interest.apply _)
 
-
-  // Form post action to set
-  private val postInsertUrl = routes.InterestController.insert()
-  private val postDeleteUrl = routes.InterestController.delete()
 
   def validateJson[A: Reads] = parse.json.validate(
     _.validate[A].asEither.left.map(e => BadRequest(JsError.toJson(e)))
@@ -58,24 +56,33 @@ class InterestController @Inject()(cc: ControllerComponents, interestDAO: Intere
     }
   }
 
-  def getInterestByUser(userId: Long)= Action.async {
-    val interestsList = interestDAO.findByUser(userId)
-    interestsList map ( s=> Ok(Json.toJson(s)))
+  def findUserByTheme(themeId: Long)= Action.async {
+    val usersList = interestDAO.findUserByTheme(themeId)
+    usersList map ( s=> Ok(s.toString))
   }
 
-  def getInterestByTheme(themeId: Long)= Action.async{
-    val interestsList = interestDAO.findByTheme(themeId)
-    interestsList map (s => Ok(Json.toJson(s)))
+  def findThemeByUser(userId: Long)= Action.async{
+    val interestsList = interestDAO.findThemeByUser(userId)
+    interestsList map (s => Ok(s.toString))
   }
-
 
   /** TEST  */
+
+  // Form post action to set
+  private val postInsertUrl = routes.InterestController.insert()
+  private val postDeleteUrl = routes.InterestController.delete()
+  private val postFindUrl = routes.InterestController.find()
+
   def insertInterestPage = Action { implicit request =>
     Ok(views.html.interest(InsertInterestForm.form, postInsertUrl))
   }
 
   def deleteInterestPage = Action { implicit request =>
       Ok(views.html.interestDel(DeleteInterestForm.form, postDeleteUrl))
+  }
+
+  def findPage = Action { implicit request =>
+    Ok(views.html.interestFind(FindForm.form, postFindUrl))
   }
 
   def insert = Action { implicit request =>
@@ -87,6 +94,7 @@ class InterestController @Inject()(cc: ControllerComponents, interestDAO: Intere
 
       val newInterest = Interest(None,formData.userId, formData.themeId)
       val interest = interestDAO.insert(newInterest)
+      Await.ready(interest, Duration.Inf)
 
       Ok(interest.toString)
       }
@@ -102,9 +110,35 @@ class InterestController @Inject()(cc: ControllerComponents, interestDAO: Intere
       formData => {
 
         val optionalInterest = interestDAO.findById(formData.interestId)
+        Await.ready(optionalInterest, Duration.Inf)
         interestDAO.delete(formData.interestId)
 
         Ok(optionalInterest.toString)
+      }
+    )
+  }
+
+
+  def find = Action{ implicit request =>
+    FindForm.form.bindFromRequest.fold(
+      formWithErrors => {
+        BadRequest(views.html.interestFind(formWithErrors, postFindUrl))
+      },
+      formData => {
+
+        if (formData.userId.isDefined){
+          val optionalThemes = interestDAO.findThemeByUser(formData.userId.get)
+          Await.ready(optionalThemes, Duration.Inf)
+          Ok(optionalThemes.toString)
+        }else if (formData.themeId.isDefined){
+          val optionalUsers = interestDAO.findUserByTheme(formData.themeId.get)
+          Await.ready(optionalUsers, Duration.Inf)
+          Ok(optionalUsers.toString)
+        }else{
+          val optionalInterest = interestDAO.findById(formData.id.get)
+          Await.ready(optionalInterest, Duration.Inf)
+          Ok(optionalInterest.toString)
+        }
       }
     )
   }

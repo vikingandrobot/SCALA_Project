@@ -1,14 +1,10 @@
 package dao
 
-import akka.http.scaladsl.model.HttpHeader.ParsingResult.Ok
-import controllers.routes
-
 import scala.concurrent.Future
 import javax.inject.{Inject, Singleton}
-import models.{InsertInterestForm, Interest, SignUpForm}
+import models._
 import play.api.db.slick.DatabaseConfigProvider
 import play.api.db.slick.HasDatabaseConfigProvider
-import play.api.mvc.Action
 import slick.jdbc.JdbcProfile
 
 import scala.concurrent.ExecutionContext
@@ -50,20 +46,20 @@ class InterestDAO @Inject()(protected val dbConfigProvider: DatabaseConfigProvid
     db.run(interests.filter(_.id === id).result.headOption)
 
   /** Retrieve the list of interest by user */
-  def findByUser(id:Long):Future[Seq[Interest]] = {
+  def findUserByTheme(themeId:Long):Future[Seq[User]] = {
     val query = for {
-      user <- users
-      interest <- interests if interest.userId == user.id == id
-    } yield interest
+      interest <- interests if interest.themeId === themeId
+      user <- users if user.id === interest.userId
+    } yield user
     db.run(query.result)
   }
 
   /** Retrieve the list of interest by theme*/
-  def findByTheme(id:Long):Future[Seq[Interest]] = {
+  def findThemeByUser(userId:Long):Future[Seq[Theme]] = {
     val query = for {
-      theme <- themes
-      interest <- interests if interest.themeId == theme.id == id
-    } yield interest
+      interest <- interests if interest.userId === userId
+      theme <- themes if theme.id === interest.themeId
+    } yield theme
     db.run(query.result)
   }
 
