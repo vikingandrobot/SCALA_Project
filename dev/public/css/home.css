@@ -1,0 +1,26 @@
+#home-cover {
+    width: 100%;
+    min-height: 80vh;
+    padding: 5%;
+
+    background-image: url(../img/background1.png);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+#home-cover h1 {
+    margin-top: 20vh;
+    padding: 5%;
+    color: white;
+    text-transform: uppercase;
+    font-weight: bolder;
+    letter-spacing: 0.05em;
+    font-size: 3em;
+    text-align: center;
+    background-color: #144571;
+}
+
+#home-cover .searchLocation {
+    margin-top: 10vh;
+}
