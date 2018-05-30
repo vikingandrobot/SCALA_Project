@@ -23,3 +23,9 @@ case class Interest(
   id: Option[Long],
   userId: Long,
   themeId: Long)
+
+case class Organization(
+  id: Option[Long],
+  organizationType: String,
+  name: String,
+  address: String)

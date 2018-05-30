@@ -14,6 +14,8 @@ POST    /login                      controllers.UserController.login
 
 GET     /themes                     controllers.ThemeController.getThemes
 
+GET     /organizations                     controllers.OrganizationController.getOrganizations
+
 # TEST du controller
 GET     /interests                  controllers.InterestController.getInterests
 GET     /interest/insert            controllers.InterestController.insertInterestPage

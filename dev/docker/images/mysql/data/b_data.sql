@@ -42,3 +42,8 @@ INSERT INTO themes(name) VALUES ('Sport : foot');
 INSERT INTO themes(name) VALUES ('Sport : tennis');
 INSERT INTO themes(name) VALUES ('Sport : autres');
 INSERT INTO themes(name) VALUES ('Autres');
+
+INSERT INTO organizations(name, type, address) VALUES ('Whaaa! prod', 'Association', 'Ch. Ecublens n°9 1009 Lausanne');
+INSERT INTO organizations(name, type, address) VALUES ('UBS', 'Banque', 'Ch. de Lausanne 43 1000 Lausanne');
+INSERT INTO organizations(name, type, address) VALUES ('Ergopix', 'SàrL', 'Ch. de Vevey 34 1000 Vevey');
+INSERT INTO organizations(name, type, address) VALUES ('Ville de Lausanne', 'Commune', 'Ch. des Alouettes 67 Lausanne');

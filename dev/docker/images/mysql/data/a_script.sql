@@ -20,7 +20,7 @@ CREATE TABLE organizations (
 	id INT(11) NOT NULL AUTO_INCREMENT,
     type VARCHAR(255) NOT NULL,
     name VARCHAR (255) NOT NULL,
-    adress VARCHAR (255) NOT NULL, 
+    address VARCHAR (255) NOT NULL, 
     
 	PRIMARY KEY (id)
 );
