@@ -29,3 +29,8 @@ case class Organization(
   organizationType: String,
   name: String,
   address: String)
+
+case class UserOrganization(
+  id: Option[Long],
+  userId: Long,
+  organizationId: Long)

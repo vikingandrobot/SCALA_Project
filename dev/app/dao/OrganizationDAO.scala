@@ -35,33 +35,33 @@ class OrganizationDAO @Inject()(protected val dbConfigProvider: DatabaseConfigPr
   // Get the object-oriented list of users directly from the query table.
   val organizations = TableQuery[OrganizationTable]
 
-  /** Retrieve the list of users */
+  /** Retrieve the list of organizations */
   def list(): Future[Seq[Organization]] = {
     val query = organizations.sortBy(s => (s.name))
     db.run(query.result)
   }
 
-  /** Retrieve a user from the id. */
+  /** Retrieve an organization from the id. */
   def findById(id: Long): Future[Option[Organization]] =
     db.run(organizations.filter(_.id === id).result.headOption)
 
-  /** Retrieve a user from the username. */
+  /** Retrieve an organizations from the name. */
   def findByName(name: String): Future[Option[Organization]] =
     db.run(organizations.filter(_.name === name).result.headOption)
 
-  /** Insert a new user, then return it. */
+  /** Insert a new organizations, then return it. */
   def insert(organization: Organization): Future[Organization] = {
     val insertQuery = organizations returning organizations.map(_.id) into ((organization, id) => organization.copy(Some(id)))
     db.run(insertQuery += organization)
   }
 
-  /** Update a user, then return an integer that indicate if the user was found (1) or not (0). */
+  /** Update an organization, then return an integer that indicate if the organization was found (1) or not (0). */
   def update(id: Long, organization: Organization): Future[Int] = {
     val organizationToUpdate: Organization = organization.copy(Some(id))
     db.run(organizations.filter(_.id === id).update(organizationToUpdate))
   }
 
-  /** Delete a user, then return an integer that indicate if the user was found (1) or not (0). */
+  /** Delete an organization, then return an integer that indicate if the organization was found (1) or not (0). */
   def delete(id: Long): Future[Int] =
     db.run(organizations.filter(_.id === id).delete)
 }
