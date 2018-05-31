@@ -1,0 +1,110 @@
+@*
+* This template takes a single argument, a String containing a
+* message to display.
+*@
+@()(implicit request: play.api.mvc.RequestHeader)
+
+@*
+* Call the `main` template with two arguments. The first
+* argument is a `String` with the title of the page, the second
+* argument is an `Html` object containing the body of the page.
+*@
+@main("L'Event en poupe !") {
+
+    <div class="container">
+        <div class="row">
+            <div id="profile-cover" class="col">
+                <h1>My profile</h1>
+            </div>
+        </div>
+        <div id="profile-detail" class="row">
+            <div class="col-md-4">
+                <div class="row">
+                    <div class="col-md-12 justify-content-md-center">
+                        <div class="profile-picture"></div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="col-md-8 content">
+                <div id="personnal-informations" class="row">
+                    <div class="info-section col-md-12">
+                        <h1>Personal informations</h1>
+                        <table class="table">
+                            <tbody>
+                                <tr>
+                                    <td>Username</td>
+                                    <td>Valomat</td>
+                                </tr>
+                                <tr>
+                                    <td>First name</td>
+                                    <td>Mathieu</td>
+                                </tr>
+                                <tr>
+                                    <td>Last name</td>
+                                    <td>Monteverde</td>
+                                </tr>
+                                <tr>
+                                    <td>Email</td>
+                                    <td>mathieu.monteverde[at]gmail.com</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <a class="btn btn-primary" href="#" role="button">Modify</a>
+                    </div>
+                </div>
+
+                <div id="organizations" class="row">
+                    <div class="info-section col-md-12">
+                        <h1>My organizations</h1>
+                        <table class="table">
+                            <tbody>
+                                <tr>
+                                    <td>Ville de Lausanne</td>
+                                    <td class="text-right"><a class="btn btn-secondary" href="#" role="button">Manage</a></td>
+                                </tr>
+                                <tr>
+                                    <td>Association des Joyeux Loustiques</td>
+                                    <td class="text-right"><a class="btn btn-secondary" href="#" role="button">Manage</a></td>
+                                </tr>
+                                <tr>
+                                    <td>Party Hard Corporation</td>
+                                    <td class="text-right"><a class="btn btn-secondary" href="#" role="button">Manage</a></td>
+                                </tr>
+                                <tr>
+                                    <td>Pure Fun Parade</td>
+                                    <td class="text-right"><a class="btn btn-secondary" href="#" role="button">Manage</a></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <a class="btn btn-primary" href="#" role="button">Create an organization</a>
+                    </div>
+                </div>
+
+                <div id="interests" class="row">
+                    <div class="info-section col-md-12">
+                        <h1>My interests</h1>
+                        <table class="table">
+                            <tbody>
+                                <tr>
+                                    <td>Musique</td>
+                                    <td class="text-right"><a class="btn btn-danger" href="#" role="button">Delete</a></td>
+                                </tr>
+                                <tr>
+                                    <td>Fête</td>
+                                    <td class="text-right"><a class="btn btn-danger" href="#" role="button">Delete</a></td>
+                                </tr>
+                                <tr>
+                                    <td>Festival</td>
+                                    <td class="text-right"><a class="btn btn-danger" href="#" role="button">Delete</a></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <a class="btn btn-primary" href="#" role="button">Add an interest</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+}

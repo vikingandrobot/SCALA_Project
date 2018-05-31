@@ -12,6 +12,8 @@ POST    /join                       controllers.UserController.join
 GET     /login                      controllers.UserController.loginPage
 POST    /login                      controllers.UserController.login
 
+GET     /profile                    controllers.UserController.profile
+
 GET     /events                     controllers.EventController.eventPage
 GET     /events/:id                 controllers.EventController.eventDetail(id:Long)
 
