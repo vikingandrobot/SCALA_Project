@@ -56,7 +56,7 @@ class EventDAO @Inject()(protected val dbConfigProvider: DatabaseConfigProvider)
 
   /** Retrieve the list of event */
   def list(): Future[Seq[Event]] = {
-    val query = events.sortBy(e => (e.title))
+    val query = events.sortBy(e => e.title)
     db.run(query.result)
   }
 
@@ -70,13 +70,13 @@ class EventDAO @Inject()(protected val dbConfigProvider: DatabaseConfigProvider)
     db.run(insertQuery += event)
   }
 
-  /** Update a user, then return an integer that indicate if the user was found (1) or not (0). */
+  /** Update a event, then return an integer that indicate if the event was found (1) or not (0). */
   def update(id: Long, event: Event): Future[Int] = {
     val eventToUpdate: Event = event.copy(Some(id))
     db.run(events.filter(_.id === id).update(eventToUpdate))
   }
 
-  /** Delete a user, then return an integer that indicate if the user was found (1) or not (0). */
+  /** Delete a event, then return an integer that indicate if the event was found (1) or not (0). */
   def delete(id: Long): Future[Int] =
     db.run(events.filter(_.id === id).delete)
 }
