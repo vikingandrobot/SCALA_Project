@@ -1,9 +1,5 @@
 package models
 
-import play.api.libs.functional.syntax.unlift
-import play.api.libs.json.{JsPath, Reads, Writes}
-import play.api.libs.functional.syntax._
-import play.api.libs.json._
 
 // Class User (with optional id for new user)
 case class User(
