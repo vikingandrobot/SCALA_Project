@@ -1,6 +1,6 @@
 package controllers
 
-import dao.UserDAO
+import dao.{InterestDAO, UserDAO}
 import javax.inject.{Inject, Singleton}
 import models.{LoginForm, SignUpForm, User}
 import org.mindrot.jbcrypt.BCrypt
@@ -12,7 +12,7 @@ import scala.util.{Failure, Success}
 
 
 @Singleton
-class UserController @Inject()(cc: ControllerComponents, userDAO: UserDAO) extends AbstractController(cc) with play.api.i18n.I18nSupport {
+class UserController @Inject()(cc: ControllerComponents, userDAO: UserDAO, interestDao: InterestDAO) extends AbstractController(cc) with play.api.i18n.I18nSupport {
 
   // Form post action to set
   private val postJoinUrl = routes.UserController.join()
@@ -97,5 +97,26 @@ class UserController @Inject()(cc: ControllerComponents, userDAO: UserDAO) exten
         }
       }
     )
+  }
+
+  def profile = Action.async { implicit request =>
+    val username = request.session.get("connected").get
+
+    val user = userDAO.findByUsername(username)
+    user flatMap {
+      case Some(u) => {
+        val interests = interestDao.findThemeByUser(u.id.get)
+        interests map {
+          si =>  Ok(u.firstName + ", " + u.lastName + ": " + si.toString())
+        }
+
+      }
+      case _ => {
+        Future[Any] {} map {
+          si => Ok("hello")
+        }
+      }
+    }
+
   }
 }
