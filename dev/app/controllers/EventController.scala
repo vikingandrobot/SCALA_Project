@@ -9,4 +9,8 @@ class EventController @Inject()(cc: ControllerComponents) extends AbstractContro
   def eventPage = Action { implicit request =>
     Ok(views.html.events())
   }
+
+  def eventDetail(id: Long) = Action{ implicit request =>
+    Ok(views.html.eventDetail())
+  }
 }

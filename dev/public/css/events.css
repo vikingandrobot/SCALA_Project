@@ -113,3 +113,77 @@
 .event-thumbnail a:hover .thumbnail {
     opacity: 0.85;
 }
+
+
+#event-detail-cover {
+    width: 100%;
+    min-height: 40vh;
+    padding: 5%;
+
+    background-image: url(../img/background1.png);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+#event-detail-cover h1 {
+    margin-top: 30vh;
+    padding: 5%;
+    color: #144571;
+    text-transform: uppercase;
+    font-weight: bolder;
+    letter-spacing: 0.05em;
+    font-size: 3em;
+    text-align: center;
+    background-color: white;
+}
+
+#event-detail .date {
+    padding:  2% 2% 2% 45px;
+    margin: 2.5% 0;
+    font-size: 1em;
+    background-image: url(../img/calendar-icon-blue.svg);
+    background-size: 30px;
+    background-position: 5px center;
+    background-repeat: no-repeat;
+    background-color: white;
+}
+#event-detail .organization {
+    padding:  2% 2% 2% 45px;
+    margin: 2.5% 0;
+    font-size: 1em;
+    background-image: url(../img/bank-icon-blue.svg);
+    background-size: 30px;
+    background-position: 5px center;
+    background-repeat: no-repeat;
+    background-color: white;
+}
+
+#event-detail .region {
+    padding:  2% 2% 2% 45px;
+    margin: 2.5% 0;
+    font-size: 1em;
+    background-image: url(../img/location-icon-blue.svg);
+    background-size: 30px;
+    background-position: 5px center;
+    background-repeat: no-repeat;
+    background-color: white;
+}
+
+#event-detail .price {
+    padding:  2% 2% 2% 45px;
+    margin: 2.5% 0;
+    font-size: 1em;
+    background-image: url(../img/price-icon-blue.svg);
+    background-size: 30px;
+    background-position: 5px center;
+    background-repeat: no-repeat;
+    background-color: white;
+}
+
+#event-detail .event-meta {
+    padding: 15px 0;
+    margin: 30px 0;
+    border-top: solid 1px #6bcbe4;
+    border-bottom: solid 1px #6bcbe4;
+}
