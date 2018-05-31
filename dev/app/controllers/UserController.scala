@@ -107,16 +107,15 @@ class UserController @Inject()(cc: ControllerComponents, userDAO: UserDAO, inter
       case Some(u) => {
         val interests = interestDao.findThemeByUser(u.id.get)
         interests map {
-          si =>  Ok(u.firstName + ", " + u.lastName + ": " + si.toString())
+          si =>  Ok(views.html.profile())
         }
 
       }
       case _ => {
         Future[Any] {} map {
-          si => Ok("hello")
+          si => Ok(views.html.profile())
         }
       }
     }
-
   }
 }
