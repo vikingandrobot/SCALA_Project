@@ -12,6 +12,8 @@ POST    /join                       controllers.UserController.join
 GET     /login                      controllers.UserController.loginPage
 POST    /login                      controllers.UserController.login
 
+GET     /events                     controllers.EventController.eventPage
+
 GET     /themes                     controllers.ThemeController.getThemes
 
 GET     /organizations                     controllers.OrganizationController.getOrganizations

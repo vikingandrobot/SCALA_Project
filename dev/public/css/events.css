@@ -1,0 +1,115 @@
+.event-thumbnail * {
+    -webkit-transition: all 0.5s; /* Safari */
+    transition: all 0.3s;
+}
+
+#events-cover {
+    width: 100%;
+    min-height: 40vh;
+    padding: 5%;
+
+    background-image: url(../img/background4.png);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+#events-cover h1 {
+    margin-top: 5%;
+    padding: 5%;
+    color: white;
+    text-transform: uppercase;
+    font-weight: bolder;
+    letter-spacing: 0.05em;
+    font-size: 3em;
+    text-align: center;
+    background-color: #482c73;
+}
+
+#events-cover .searchLocation {
+    margin-top: 5%;
+}
+
+.event-thumbnail {
+    padding: 2.5%;
+    margin: 1.5% 0;
+}
+
+.event-thumbnail .wrapper {
+    display: block;
+    text-decoration: none;
+    color: black;
+    background-color: white;
+    box-shadow: 2px 2px 5px 4px rgba(0, 0, 0, 0.1);
+}
+
+.event-thumbnail .thumbnail {
+    padding-top: 75%;
+    background-image: url("../img/background1.png");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.event-thumbnail .content {
+    position: relative;
+    padding: 7.5%;
+}
+
+.event-thumbnail h2 {
+    font-size: 1.5em;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.event-thumbnail .date {
+    position: absolute;
+    bottom: 110%;
+    right: 0px;
+    padding:  0.2em 0.8em 0.2em 30px;
+    margin-top: 0;
+    margin-bottom: 0.2em;
+    font-size: 0.8em;
+    background-image: url(../img/calendar-icon-blue.svg);
+    background-size: 15px;
+    background-position: 5px center;
+    background-repeat: no-repeat;
+    background-color: white;
+}
+.event-thumbnail .organization {
+    padding-left: 25px;
+    background-image: url(../img/bank-icon-blue.svg);
+    background-size: 15px;
+    background-position: left center;
+    background-repeat: no-repeat;
+    margin-top: 0;
+    margin-bottom: 0.2em;
+}
+.event-thumbnail .region {
+    padding-left: 25px;
+    background-image: url(../img/location-icon-blue.svg);
+    background-size: 15px;
+    background-position: left center;
+    background-repeat: no-repeat;
+    margin-top: 0;
+    margin-bottom: 0.2em;
+}
+
+.event-thumbnail .description {
+    overflow: hidden;
+    font-size: 0.9em;
+    line-height: 1.5em;
+    height: 2.8em;
+    text-overflow: ellipsis;
+    color: #aaaaaa;
+}
+
+.event-thumbnail a:hover h2 {
+    color: #6bcbe4;
+}
+.event-thumbnail a:hover {
+    box-shadow: 4px 4px 8px 6px rgba(0, 0, 0, 0.15);
+}
+.event-thumbnail a:hover .thumbnail {
+    opacity: 0.85;
+}
