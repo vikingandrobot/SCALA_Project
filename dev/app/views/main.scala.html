@@ -13,6 +13,7 @@
 
     <link rel="stylesheet" media="screen" href="@routes.Assets.versioned("css/bootstrap.min.css")">
     <link rel="stylesheet" media="screen" href="@routes.Assets.versioned("css/home.css")">
+    <link rel="stylesheet" media="screen" href="@routes.Assets.versioned("css/events.css")">
 </head>
 <body>
     <header>
@@ -30,10 +31,7 @@
                         <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
                             <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
                                 <li class="nav-item">
-                                    <a class="nav-link" href="@routes.HomeController.index()">Home <span class="sr-only">(current)</span></a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="#">Events</a>
+                                    <a class="nav-link" href="@routes.EventController.eventPage()">Events</a>
                                 </li>
                             </ul>
                             <ul class="navbar-nav my-2 my-lg-0">
