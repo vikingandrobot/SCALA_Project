@@ -1,0 +1,47 @@
+@*
+* This template takes a single argument, a String containing a
+* message to display.
+*@
+@()(implicit request: play.api.mvc.RequestHeader)
+
+@*
+* Call the `main` template with two arguments. The first
+* argument is a `String` with the title of the page, the second
+* argument is an `Html` object containing the body of the page.
+*@
+@main("Titre de l'Event") {
+
+    <div id="event-detail" class="container">
+        <div class="row">
+            <div id="event-detail-cover" class="col">
+                <div class="row">
+                    <div class="col-md-12">
+                        <h1>La foire aux bonbons</h1>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row event-meta">
+            <div class="col-md-4">
+                <div class="date">Mer 12 juillet 2017</div>
+            </div>
+            <div class="col-md-4">
+                <div class="organization">Ville de Lausanne</div>
+            </div>
+            <div class="col-md-4">
+                <div class="region">Lausanne</div>
+            </div>
+        </div>
+        <div class="row justify-content-md-center">
+            <div class="col-md-8">
+                <p>
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi ut nibh risus. Donec eros risus,
+                    porttitor in massa ac, sagittis suscipit ante. Integer massa ante, finibus et venenatis quis,
+                    vulputate a ligula. Fusce fringilla velit in pretium maximus. Fusce eget ligula nec massa molestie
+                    sagittis vitae efficitur magna.
+                </p>
+            </div>
+        </div>
+    </div>
+
+}

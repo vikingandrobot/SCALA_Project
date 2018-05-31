@@ -13,6 +13,7 @@ GET     /login                      controllers.UserController.loginPage
 POST    /login                      controllers.UserController.login
 
 GET     /events                     controllers.EventController.eventPage
+GET     /events/:id                 controllers.EventController.eventDetail(id:Long)
 
 GET     /themes                     controllers.ThemeController.getThemes
 
