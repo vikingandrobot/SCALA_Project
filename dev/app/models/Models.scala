@@ -1,5 +1,6 @@
 package models
 
+import java.sql.Timestamp
 
 // Class User (with optional id for new user)
 case class User(
@@ -28,5 +29,18 @@ case class Organization(
 
 case class UserOrganization(
   id: Option[Long],
+  userId: Long,
+  organizationId: Long)
+
+case class Event(
+  id: Option[Long],
+  title: String,
+  description: String,
+  price: Float,
+  address: String,
+  region: String,
+  startDate: Timestamp,
+  endDate: Timestamp,
+  scheduleDescription: String,
   userId: Long,
   organizationId: Long)
