@@ -12,8 +12,12 @@ POST    /join                       controllers.UserController.join
 GET     /login                      controllers.UserController.loginPage
 POST    /login                      controllers.UserController.login
 
+
 GET     /events                     controllers.EventController.eventPage
+GET     /events/new                 controllers.EventController.eventNewPage
+POST    /events/new                 controllers.EventController.eventNew
 GET     /events/:id                 controllers.EventController.eventDetail(id:Long)
+
 
 GET     /themes                     controllers.ThemeController.getThemes
 
