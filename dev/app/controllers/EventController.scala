@@ -20,7 +20,7 @@ class EventController @Inject()(cc: ControllerComponents, eventDAO: EventDAO, or
 
   def eventPage = Action.async { implicit request =>
     for {
-      e <- eventDAO.list()
+      e <- eventDAO.listEventsWithOrganization()
     } yield Ok(views.html.events(e))
   }
 
