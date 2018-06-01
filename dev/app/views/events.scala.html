@@ -2,7 +2,7 @@
 * This template takes a single argument, a String containing a
 * message to display.
 *@
-@()(implicit request: play.api.mvc.RequestHeader)
+@(events: Seq[Event])(implicit request: play.api.mvc.RequestHeader)
 
 @*
 * Call the `main` template with two arguments. The first
@@ -35,86 +35,31 @@
 
         <div id="events" class="row">
 
-
-            <div class="event-thumbnail col-md-4">
-                <a class="wrapper" href="#" title="La foire du Bonbon" alt="Link to event la foire du bonbon">
-                    <div class="thumbnail"></div>
-                    <div class="content">
-                        <h2>La foire du Bonbon</h2>
-                        <p class="description">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi ut nibh risus. Donec eros risus,
-                            porttitor in massa ac, sagittis suscipit ante. Integer massa ante, finibus et venenatis quis,
-                            vulputate a ligula. Fusce fringilla velit in pretium maximus. Fusce eget ligula nec massa molestie
-                            sagittis vitae efficitur magna. </p>
-                        <p class="date">Mer. 12 juillet 2018</p>
-                        <p class="organization">Ville de Lausanne</p>
-                        <p class="region">Lausanne</p>
+            @if(events.isEmpty) {
+            <h2>Nothing to display</h2>
+            } else {
+                @for(e <- events) {
+                    <div class="event-thumbnail col-md-4">
+                        <a class="wrapper" href="#" title="@e.title" alt="Link to event la foire du bonbon">
+                            <div class="thumbnail"></div>
+                            <div class="content">
+                                <h2>@e.title</h2>
+                                <p class="description">@e.description </p>
+                                <p class="date">@e.startDate</p>
+                                <p class="organization">@e.organizationId</p>
+                                <p class="region">@e.region</p>
+                            </div>
+                        </a>
                     </div>
-                </a>
-            </div>
+                }
+            }
 
-            <div class="event-thumbnail col-md-4">
-                <a class="wrapper" href="#" title="La foire du Bonbon" alt="Link to event la foire du bonbon">
-                    <div class="thumbnail"></div>
-                    <div class="content">
-                        <h2>La foire du Bonbon</h2>
-                        <p class="description">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi ut nibh risus. Donec eros risus,
-                            porttitor in massa ac, sagittis suscipit ante. Integer massa ante, finibus et venenatis quis,
-                            vulputate a ligula. Fusce fringilla velit in pretium maximus. Fusce eget ligula nec massa molestie
-                            sagittis vitae efficitur magna. </p>
-                        <p class="date">Mer. 12 juillet 2018</p>
-                        <p class="organization">Ville de Lausanne</p>
-                        <p class="region">Lausanne</p>
-                    </div>
-                </a>
-            </div>
 
-            <div class="event-thumbnail col-md-4">
-                <a class="wrapper" href="#" title="La foire du Bonbon" alt="Link to event la foire du bonbon">
-                    <div class="thumbnail"></div>
-                    <div class="content">
-                        <h2>La foire du Bonbon</h2>
-                        <p class="description">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi ut nibh risus. Donec eros risus,
-                            porttitor in massa ac, sagittis suscipit ante. Integer massa ante, finibus et venenatis quis,
-                            vulputate a ligula. Fusce fringilla velit in pretium maximus. Fusce eget ligula nec massa molestie
-                            sagittis vitae efficitur magna. </p>
-                        <p class="date">Mer. 12 juillet 2018</p>
-                        <p class="organization">Ville de Lausanne</p>
-                        <p class="region">Lausanne</p>
-                    </div>
-                </a>
-            </div>
 
-            <div class="event-thumbnail col-md-4">
-                <a class="wrapper" href="#" title="La foire du Bonbon" alt="Link to event la foire du bonbon">
-                    <div class="thumbnail"></div>
-                    <div class="content">
-                        <h2>La foire du Bonbon</h2>
-                        <p class="description">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi ut nibh risus. Donec eros risus,
-                            porttitor in massa ac, sagittis suscipit ante. Integer massa ante, finibus et venenatis quis,
-                            vulputate a ligula. Fusce fringilla velit in pretium maximus. Fusce eget ligula nec massa molestie
-                            sagittis vitae efficitur magna. </p>
-                        <p class="date">Mer. 12 juillet 2018</p>
-                        <p class="organization">Ville de Lausanne</p>
-                        <p class="region">Lausanne</p>
-                    </div>
-                </a>
-            </div>
 
-            <div class="event-thumbnail col-md-4">
-                <a class="wrapper" href="#" title="La foire du Bonbon" alt="Link to event la foire du bonbon">
-                    <div class="thumbnail"></div>
-                    <div class="content">
-                        <h2>La foire du Bonbon</h2>
-                        <p class="description">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi ut nibh risus. Donec eros risus,
-                            porttitor in massa ac, sagittis suscipit ante. Integer massa ante, finibus et venenatis quis,
-                            vulputate a ligula. Fusce fringilla velit in pretium maximus. Fusce eget ligula nec massa molestie
-                            sagittis vitae efficitur magna. </p>
-                        <p class="date">Mer. 12 juillet 2018</p>
-                        <p class="organization">Ville de Lausanne</p>
-                        <p class="region">Lausanne</p>
-                    </div>
-                </a>
-            </div>
+
+
+
         </div>
     </div>
 
