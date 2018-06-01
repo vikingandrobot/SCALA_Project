@@ -2,7 +2,7 @@ package controllers
 
 import java.sql.Timestamp
 
-import dao.{EventDAO, UserDAO, UserOrganizationDAO}
+import dao.{EventDAO, OrganizationDAO, UserDAO, UserOrganizationDAO}
 import javax.inject.{Inject, Singleton}
 import models.{Event, EventForm, User}
 import play.api.mvc.{AbstractController, ControllerComponents}
@@ -12,14 +12,16 @@ import scala.concurrent.Future
 
 
 @Singleton
-class EventController @Inject()(cc: ControllerComponents, eventDAO: EventDAO, userDAO: UserDAO, userOrganizationDAO: UserOrganizationDAO) extends AbstractController(cc) with play.api.i18n.I18nSupport {
+class EventController @Inject()(cc: ControllerComponents, eventDAO: EventDAO, organizationDAO: OrganizationDAO, userDAO: UserDAO, userOrganizationDAO: UserOrganizationDAO) extends AbstractController(cc) with play.api.i18n.I18nSupport {
 
   // Form post action to set
   private val postNewEventUrl = routes.EventController.eventNew()
 
 
-  def eventPage = Action { implicit request =>
-    Ok(views.html.events())
+  def eventPage = Action.async { implicit request =>
+    for {
+      e <- eventDAO.listEventsWithOrganization()
+    } yield Ok(views.html.events(e))
   }
 
 
