@@ -1,0 +1,27 @@
+@(form: Form[models.OrgnizationData], postUrl: Call)(implicit request: RequestHeader, messagesProvider: MessagesProvider)
+
+@main("Create an organization") {
+
+    <h1>Create an organization</h1>
+
+            @* Display Global errors *@
+            @if(form.hasGlobalErrors) {
+            @form.globalErrors.map { error: FormError =>
+            <div class="alert alert-danger" role="alert">
+                @error.message
+            </div>
+        }
+    }
+
+    @helper.form(postUrl) {
+        @helper.CSRF.formField
+
+        @helper.inputText(form("organizationType"), '_label -> "Type", '_showConstraints -> false)
+
+        @helper.inputText(form("name"), '_label -> "Name", '_showConstraints -> false)
+
+        @helper.inputText(form("adress"), '_label -> "Adress", '_showConstraints -> false)
+
+        <button>Create</button>
+    }
+}

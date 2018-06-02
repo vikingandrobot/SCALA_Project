@@ -2,16 +2,53 @@ package controllers
 
 import dao.{OrganizationDAO, UserDAO, UserOrganizationDAO}
 import javax.inject.{Inject, Singleton}
-import models.{Organization, Theme, User, UserOrganization}
-import play.api.libs.functional.syntax._
-import play.api.libs.json._
+import models.{Organization,OrganizationForm,User,UserOrganization}
 import play.api.mvc.{AbstractController, ControllerComponents}
 
 import scala.concurrent.ExecutionContext.Implicits.global
+import scala.concurrent.Future
 
 @Singleton
 class OrganizationController @Inject()(cc: ControllerComponents, userDAO: UserDAO, organizationDAO: OrganizationDAO, userOrganizationDAO: UserOrganizationDAO) extends AbstractController(cc) with play.api.i18n.I18nSupport {
 
+  private val postNewOrganizationUrl = routes.OrganizationController.organizationNew()
+
+  def organizazionNew = Action { implicit request =>
+    OrganizationForm.form.bindFromRequest.fold(
+      formWithErrors => {
+        BadRequest(views.html.organizationNew(formWithErrors,postNewOrganizationUrl))
+      },
+      formData => {
+
+        val newOrganization = Organization(
+          None,
+          formData.organizationType,
+          formData.name,
+          formData.adress)
+
+        Ok(newOrganization.toString)
+      }
+    )
+  }
+
+  def organizationNewPage = Action.async { implicit request =>
+    // Get the session
+    request.session.get("connected") match {
+
+      // If the session exists
+      case Some(s) =>
+        for {
+          u <- userDAO.findByUsername(s)
+        } yield {
+          if (!u.isDefined) Future.successful(Seq.empty)
+          if (u.isEmpty) Unauthorized("Oops, you are not connected")
+          else  Ok(views.html.organizationNew(OrganizationForm.form, postNewOrganizationUrl))
+        }
+
+      // If the session does not exist
+      case None => Future { Unauthorized("Oops, you are not connected") }
+    }
+  }
 
   /**
     * Get the list of all existing users, then return it.

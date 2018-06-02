@@ -25,7 +25,9 @@ GET     /events/:id                 controllers.EventController.eventDetail(id:L
 
 GET     /themes                     controllers.ThemeController.getThemes
 
-GET     /organizations                     controllers.OrganizationController.getOrganizations
+GET     /organizations              controllers.OrganizationController.getOrganizations
+GET     /orgnization/new            controllers.OrganizationController.organizationNewPage
+POST    /orgnization/new            controllers.OrganizationController.organizationNew
 
 # TEST du controller
 GET     /interests                  controllers.InterestController.getInterests
