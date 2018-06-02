@@ -53,7 +53,7 @@ class OrganizationController @Inject()(cc: ControllerComponents, userDAO: UserDA
               None,
               formData.organizationType,
               formData.name,
-              formData.adress
+              formData.address
             )
 
            val organization = for{
