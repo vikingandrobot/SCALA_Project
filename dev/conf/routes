@@ -12,6 +12,8 @@ POST    /join                       controllers.UserController.join
 GET     /login                      controllers.UserController.loginPage
 POST    /login                      controllers.UserController.login
 
+GET     /logout                     controllers.UserController.logout
+
 GET     /profile                    controllers.UserController.profile
 
 

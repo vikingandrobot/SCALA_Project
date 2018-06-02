@@ -99,6 +99,10 @@ class UserController @Inject()(cc: ControllerComponents, userDAO: UserDAO, inter
     )
   }
 
+  def logout = Action { implicit request =>
+    Redirect(routes.HomeController.index()).withNewSession
+  }
+
   def profile = Action.async { implicit request =>
     val username = request.session.get("connected").get
 
