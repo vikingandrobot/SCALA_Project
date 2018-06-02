@@ -4,7 +4,7 @@ import java.sql.Timestamp
 
 import scala.concurrent.Future
 import javax.inject.{Inject, Singleton}
-import models.Event
+import models.{Event, Organization}
 import play.api.db.slick.DatabaseConfigProvider
 import play.api.db.slick.HasDatabaseConfigProvider
 import slick.jdbc.JdbcProfile
@@ -18,6 +18,7 @@ trait EventComponent {
   import profile.api._
 
   class EventTable(tag: Tag) extends Table[Event](tag, "events") {
+
     def id = column[Long]("id", O.PrimaryKey, O.AutoInc) // Primary key, auto-incremented
 
     def title = column[String]("title")
@@ -47,12 +48,13 @@ trait EventComponent {
 
 
 @Singleton
-class EventDAO @Inject()(protected val dbConfigProvider: DatabaseConfigProvider)(implicit executionContext: ExecutionContext) extends EventComponent with HasDatabaseConfigProvider[JdbcProfile] {
+class EventDAO @Inject()(protected val dbConfigProvider: DatabaseConfigProvider)(implicit executionContext: ExecutionContext) extends EventComponent with OrganizationComponent with HasDatabaseConfigProvider[JdbcProfile] {
 
   import profile.api._
 
   // Get the object-oriented list of users directly from the query table.
   val events = TableQuery[EventTable]
+  val organization = TableQuery[OrganizationTable]
 
   /** Retrieve the list of event */
   def list(): Future[Seq[Event]] = {
@@ -60,9 +62,25 @@ class EventDAO @Inject()(protected val dbConfigProvider: DatabaseConfigProvider)
     db.run(query.result)
   }
 
+  /** Retrieve the list of event with organization */
+  def listEventsWithOrganization(): Future[Seq[(Event, Organization)]] = {
+    val query = for {
+      e <- events join organization on (_.organizationId === _.id)
+    } yield (e._1, e._2)
+
+    db.run(query.result)
+  }
+
   /** Retrieve a event from the id. */
   def findById(id: Long): Future[Option[Event]] =
     db.run(events.filter(_.id === id).result.headOption)
+
+  /** Retrieve a event from the id with orrganization. */
+  def findByIdWithOrganization(id: Long): Future[Option[(Event, Organization)]] = {
+    val query = events filter (_.id === id) join organization on (_.organizationId === _.id)
+
+    db.run(query.result.headOption)
+  }
 
   /** Insert a new event, then return it. */
   def insert(event: Event): Future[Event] = {
