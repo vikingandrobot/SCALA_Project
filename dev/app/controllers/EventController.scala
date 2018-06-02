@@ -125,8 +125,17 @@ class EventController @Inject()(cc: ControllerComponents, eventDAO: EventDAO, or
   }
 
 
-  def eventDetail(id: Long) = Action{ implicit request =>
-    Ok(views.html.eventDetail())
+  def eventDetail(id: Long) = Action.async { implicit request =>
+
+    eventDAO.findByIdWithOrganization(id) flatMap {
+      case Some(e) =>
+        Future { Ok(views.html.eventDetail(e)) }
+
+      case None =>
+        for {
+          e <- eventDAO.listEventsWithOrganization()
+        } yield Ok(views.html.events(e))
+    }
   }
 }
 
