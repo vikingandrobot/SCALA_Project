@@ -1,0 +1,47 @@
+@(events: Seq[(Organization)])(implicit request: play.api.mvc.RequestHeader)
+
+@main("Organizations") {
+
+    <div class="container">
+        <div class="row">
+            <div id="events-cover" class="col">
+                <div class="row">
+                    <div class="col-md-12">
+                        <h1>Organizations</h1>
+                    </div>
+                </div>
+
+                <div class="row justify-content-center">
+                    <div class="col-md-6">
+                        <form class="searchLocation" method="GET" action="/events">
+                            <div class="form-group">
+                                <input type="text" name="city" class="form-control" id="searchLocation"  placeholder="Cherchez dans votre ville...">
+                            </div>
+                            <button type="submit" class="float-right btn btn-primary">Rechercher</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="events" class="row">
+        @if(events.isEmpty) {
+            <h2>Nothing to display</h2>
+        } else {
+            @for(e <- events) {
+                <div class="event-thumbnail col-md-4">
+                    <a class="wrapper" href="@routes.EventController.eventDetail(e.id.get)" title="@e.name" alt="Link to event la foire du bonbon">
+                        <div class="thumbnail"></div>
+                        <div class="content">
+                            <h2>@e.name</h2>
+                            <p class="description">@e.organizationType </p>
+                            <p class="date">@e.address</p>
+                        </div>
+                    </a>
+                </div>
+            }
+        }
+        </div>
+    </div>
+
+}

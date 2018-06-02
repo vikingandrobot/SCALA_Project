@@ -16,7 +16,7 @@ object OrganizationForm {
       "id" -> optional(longNumber),
       "organizationType" -> nonEmptyText(minLength=3, maxLength=100),
       "name" ->  nonEmptyText(minLength=3, maxLength=100),
-      "adresse"-> nonEmptyText(minLength=3, maxLength=100)
+      "adresse"-> nonEmptyText(minLength=3, maxLength=200)
     )(OrgnizationData.apply)(OrgnizationData.unapply)
   )
 }

@@ -1,0 +1,30 @@
+
+@(event: (Organization))(implicit request: play.api.mvc.RequestHeader)
+
+@main(event.name) {
+
+    <div id="event-detail" class="container">
+        <div class="row">
+            <div id="event-detail-cover" class="col">
+                <div class="row">
+                    <div class="col-md-12">
+                        <h1>@event.name</h1>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row event-meta">
+            <div class="col-md-3 col-sm-6">
+                <div class="date">@event.address</div>
+            </div>
+        </div>
+        <div class="row justify-content-md-center">
+            <div class="col-md-8">
+                <p>
+                @event.address
+                </p>
+            </div>
+        </div>
+    </div>
+
+}

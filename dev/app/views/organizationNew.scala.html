@@ -1,7 +1,8 @@
 @(form: Form[models.OrgnizationData], postUrl: Call)(implicit request: RequestHeader, messagesProvider: MessagesProvider)
 
 @main("Create an organization") {
-
+<div class="row">
+    <div class="col">
     <h1>Create an organization</h1>
 
             @* Display Global errors *@
@@ -24,4 +25,6 @@
 
         <button>Create</button>
     }
+    </div>
+</div>
 }

@@ -26,8 +26,9 @@ GET     /events/:id                 controllers.EventController.eventDetail(id:L
 GET     /themes                     controllers.ThemeController.getThemes
 
 GET     /organizations              controllers.OrganizationController.getOrganizations
-GET     /orgnization/new            controllers.OrganizationController.organizationNewPage
-POST    /orgnization/new            controllers.OrganizationController.organizationNew
+GET     /organization/new           controllers.OrganizationController.organizationNewPage
+POST    /organization/new           controllers.OrganizationController.organizationNew
+GET     /organization/:id           controllers.OrganizationController.organizationDetail(id:Long)
 
 # TEST du controller
 GET     /interests                  controllers.InterestController.getInterests
