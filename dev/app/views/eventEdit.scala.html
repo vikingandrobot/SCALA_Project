@@ -1,0 +1,58 @@
+@(form: Form[models.EventData], postUrl: Call, organizations: Seq[Organization])(implicit request: RequestHeader, messagesProvider: MessagesProvider)
+
+@main("Create an event") {
+<div class="row">
+    <div class="col">
+        <h1>Edit @form("title").value</h1>
+
+        @* Display Global errors *@
+        @if(form.hasGlobalErrors) {
+        @form.globalErrors.map { error: FormError =>
+        <div class="alert alert-danger" role="alert">
+            @error.message
+        </div>
+        }
+        }
+
+        @helper.form(postUrl) {
+        @helper.CSRF.formField
+
+        <input type="hidden" name="id" value='@form("id").value' >
+
+        @helper.inputText(form("title"), '_label -> "Title", '_showConstraints -> false)
+
+        @helper.textarea(form("description"), '_label -> "Description", '_showConstraints -> false)
+
+        @helper.inputText(form("price"), '_label -> "Price", '_showConstraints -> false)
+
+        @helper.inputText(form("address"), '_label -> "Address", '_showConstraints -> false)
+
+        @helper.inputText(form("region"), '_label -> "Region", '_showConstraints -> false)
+
+        @helper.inputDate(form("startDate"), '_label -> "Start date", '_showConstraints -> false)
+
+        @helper.inputDate(form("endDate"), '_label -> "End date", '_showConstraints -> false)
+
+        @helper.textarea(form("scheduleDescription"), '_label -> "Schedule description", '_showConstraints -> false)
+
+
+
+        @helper.input(form("organizationId"), '_label -> "Organization", '_showConstraints -> false) { (id, name, value, args) =>
+
+        <select name="@name" id="@id">
+            @for(o <- organizations) {
+                @if(form("id").value.get.toInt == o.id.get)  {
+                    <option value="@o.id" selected>@o.name</option>
+                } else {
+                    <option value="@o.id">@o.name</option>
+                }
+
+            }
+        </select>
+        }
+
+        <button>Edit</button>
+        }
+    </div>
+</div>
+}
