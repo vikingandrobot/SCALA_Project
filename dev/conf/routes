@@ -21,6 +21,8 @@ GET     /events                     controllers.EventController.eventPage
 GET     /events/new                 controllers.EventController.eventNewPage
 POST    /events/new                 controllers.EventController.eventNew
 GET     /events/:id                 controllers.EventController.eventDetail(id:Long)
+POST    /events/edit                controllers.EventController.eventEdit
+GET     /events/edit/:id            controllers.EventController.eventEditPage(id:Long)
 
 
 GET     /themes                     controllers.ThemeController.getThemes
