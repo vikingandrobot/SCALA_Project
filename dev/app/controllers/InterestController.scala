@@ -1,38 +1,17 @@
 package controllers
 
-import dao.InterestDAO
+import dao.{InterestDAO, ThemeDAO, UserDAO}
 import javax.inject.{Inject, Singleton}
-import models.{DeleteInterestForm, FindForm, InsertInterestForm, Interest}
-import play.api.libs.functional.syntax._
-import play.api.libs.json._
-import play.api.mvc.{AbstractController, Action, ControllerComponents}
-import scala.concurrent.duration.Duration
-import scala.concurrent.{ Await, Future }
+import models._
+import play.api.mvc.{AbstractController, ControllerComponents}
 
-
+import scala.concurrent.{Await, Future}
 import scala.concurrent.ExecutionContext.Implicits.global
 
 @Singleton
-class InterestController @Inject()(cc: ControllerComponents, interestDAO: InterestDAO)
+class InterestController @Inject()(cc: ControllerComponents, interestDAO: InterestDAO, themeDAO:ThemeDAO, userDAO:UserDAO)
   extends AbstractController(cc) with play.api.i18n.I18nSupport {
-
-  implicit val themeToJson: Writes[Interest] = (
-    (JsPath \ "id").write[Option[Long]] and
-      (JsPath \ "userId").write[Long] and
-        (JsPath \ "themeId").write[Long]
-    )(unlift(Interest.unapply))
-
-  implicit val jsonToTheme: Reads[Interest] = (
-    (JsPath \ "id").readNullable[Long] and
-      (JsPath \ "userId").read[Long] and
-        (JsPath \ "themeId").read[Long]
-    )(Interest.apply _)
-
-
-  def validateJson[A: Reads] = parse.json.validate(
-    _.validate[A].asEither.left.map(e => BadRequest(JsError.toJson(e)))
-  )
-
+  /*
   /**
     * Get the list of all existing users, then return it.
     * The Action.async is used because the request is asynchronous.
@@ -65,20 +44,77 @@ class InterestController @Inject()(cc: ControllerComponents, interestDAO: Intere
     val interestsList = interestDAO.findThemeByUser(userId)
     interestsList map (s => Ok(s.toString))
   }
-
+*/
   /** TEST  */
 
   // Form post action to set
-  private val postInsertUrl = routes.InterestController.insert()
-  private val postDeleteUrl = routes.InterestController.delete()
-  private val postFindUrl = routes.InterestController.find()
+  private val postNewInterestUrl = routes.InterestController.interestNew()
+//  private val postDelInterestUrl = routes.InterestController.delete()
 
-  def insertInterestPage = Action { implicit request =>
-    Ok(views.html.interest(InsertInterestForm.form, postInsertUrl))
+  def interestNewPage = Action.async { implicit request =>
+    // Get the session
+    request.session.get("connected") match {
+
+      // If the session exists
+      case Some(s) =>
+        for {
+          u <- userDAO.findByUsername(s)
+          t <-
+            if (u.isDefined) themeDAO.list()
+            else Future.successful(Seq.empty)
+        } yield {
+
+          if (u.isEmpty) Unauthorized("Oops, you are not connected")
+          else Ok(views.html.interestNew(NewInterestForm.form, postNewInterestUrl, t))
+        }
+
+      // If the session does not exist
+      case None => Future { Unauthorized("Oops, you are not connected") }
+    }
   }
 
-  def deleteInterestPage = Action { implicit request =>
-      Ok(views.html.interestDel(DeleteInterestForm.form, postDeleteUrl))
+  def interestNew = Action.async { implicit request =>
+    // Get the connected user
+    val user: Future[Option[User]] = {
+
+      // Get the session
+      val session = request.session.get("connected")
+
+      if(session.isEmpty)
+        Future.failed(new RuntimeException("user not found"))
+      else {
+        val user = userDAO.findByUsername(session.get)
+        for {
+          u <- user
+          if u.isDefined
+        } yield u
+      }
+    }
+
+    user flatMap {
+      case Some(u)=>
+        NewInterestForm.form.bindFromRequest.fold(
+          formWithErrors => {
+            Future{
+              BadRequest(views.html.interestNew(formWithErrors, postNewInterestUrl,Seq.empty))
+            }
+          },
+          formData =>{
+            Future{
+              val newInterest = Interest(None,u.id.get, formData.themeId)
+              val interest = interestDAO.insert(newInterest)
+             // todo attention si signature change
+              Redirect(routes.UserController.profile)
+            }
+          }
+
+        )
+      case None => Future.successful(Unauthorized("Oops, you are not connected"))
+    }
+  }
+
+ /* def deleteInterestPage = Action { implicit request =>
+
   }
 
   def findPage = Action { implicit request =>
@@ -141,6 +177,6 @@ class InterestController @Inject()(cc: ControllerComponents, interestDAO: Intere
         }
       }
     )
-  }
+  }*/
 }
 
