@@ -9,7 +9,7 @@ import scala.concurrent.{Await, Future}
 import scala.concurrent.ExecutionContext.Implicits.global
 
 @Singleton
-class InterestController @Inject()(cc: ControllerComponents, interestDAO: InterestDAO, themeDAO:ThemeDAO, userDAO:UserDAO)
+class InterestController @Inject()(cc: ControllerComponents, interestDAO: InterestDAO, themeDAO: ThemeDAO, userDAO: UserDAO)
   extends AbstractController(cc) with play.api.i18n.I18nSupport {
 
   // Form post action to set
@@ -33,7 +33,9 @@ class InterestController @Inject()(cc: ControllerComponents, interestDAO: Intere
         }
 
       // If the session does not exist
-      case None => Future { Unauthorized("Oops, you are not connected") }
+      case None => Future {
+        Unauthorized("Oops, you are not connected")
+      }
     }
   }
 
@@ -44,7 +46,7 @@ class InterestController @Inject()(cc: ControllerComponents, interestDAO: Intere
       // Get the session
       val session = request.session.get("connected")
 
-      if(session.isEmpty)
+      if (session.isEmpty)
         Future.failed(new RuntimeException("user not found"))
       else {
         val user = userDAO.findByUsername(session.get)
@@ -56,18 +58,18 @@ class InterestController @Inject()(cc: ControllerComponents, interestDAO: Intere
     }
 
     user flatMap {
-      case Some(u)=>
+      case Some(u) =>
         NewInterestForm.form.bindFromRequest.fold(
           formWithErrors => {
-            Future{
-              BadRequest(views.html.interestNew(formWithErrors, postNewInterestUrl,Seq.empty))
+            Future {
+              BadRequest(views.html.interestNew(formWithErrors, postNewInterestUrl, Seq.empty))
             }
           },
-          formData =>{
-            Future{
-              val newInterest = Interest(None,u.id.get, formData.themeId)
+          formData => {
+            Future {
+              val newInterest = Interest(None, u.id.get, formData.themeId)
               val interest = interestDAO.insert(newInterest)
-             // todo attention si signature change
+              // todo attention si signature change
               Redirect(routes.UserController.profile)
             }
           }
@@ -77,14 +79,14 @@ class InterestController @Inject()(cc: ControllerComponents, interestDAO: Intere
     }
   }
 
-  def interestDelete(id : Long) = Action.async { implicit request =>
+  def interestDelete(id: Long) = Action.async { implicit request =>
     // Get the connected user
     val user: Future[Option[User]] = {
 
       // Get the session
       val session = request.session.get("connected")
 
-      if(session.isEmpty)
+      if (session.isEmpty)
         Future.failed(new RuntimeException("user not found"))
       else {
         val user = userDAO.findByUsername(session.get)
@@ -96,12 +98,17 @@ class InterestController @Inject()(cc: ControllerComponents, interestDAO: Intere
     }
 
     user flatMap {
-      case Some(u)=>
-            Future{
-                interestDAO.delete(id)
-              // todo attention si signature change
-              Redirect(routes.UserController.profile)
-            }
+      case Some(u) =>
+        Future {
+          for (
+            i <- interestDAO.findById(id)
+            if (i.isDefined)
+          ) yield {
+            if (i.get.userId.equals(u.id.get)) interestDAO.delete(id)
+            else Future.successful(Unauthorized("Oops, an error has occured"))
+          }
+          Redirect(routes.UserController.profile)
+        }
       case None => Future.successful(Unauthorized("Oops, you are not connected"))
     }
   }
