@@ -82,6 +82,11 @@ class EventDAO @Inject()(protected val dbConfigProvider: DatabaseConfigProvider)
     db.run(query.result.headOption)
   }
 
+  def findEventsByOrganization(id:Long) : Future[Seq[Event]] = {
+    val query = events.filter(_.organizationId === id).sortBy(s => (s.title))
+    db.run(query.result)
+  }
+
   /** Insert a new event, then return it. */
   def insert(event: Event): Future[Event] = {
     val insertQuery = events returning events.map(_.id) into ((event, id) => event.copy(Some(id)))

@@ -1,6 +1,6 @@
 package controllers
 
-import dao.{OrganizationDAO, UserDAO, UserOrganizationDAO}
+import dao.{EventDAO, OrganizationDAO, UserDAO, UserOrganizationDAO}
 import javax.inject.{Inject, Singleton}
 import models.{Organization, OrganizationForm, OrgnizationData, User, UserOrganization}
 import play.api.mvc.{AbstractController, ControllerComponents}
@@ -9,7 +9,7 @@ import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
 @Singleton
-class OrganizationController @Inject()(cc: ControllerComponents, userDAO: UserDAO, organizationDAO: OrganizationDAO, userOrganizationDAO: UserOrganizationDAO) extends AbstractController(cc) with play.api.i18n.I18nSupport {
+class OrganizationController @Inject()(cc: ControllerComponents, userDAO: UserDAO, organizationDAO: OrganizationDAO, userOrganizationDAO: UserOrganizationDAO, eventDAO: EventDAO) extends AbstractController(cc) with play.api.i18n.I18nSupport {
 
   private val postNewOrganizationUrl = routes.OrganizationController.organizationNew()
   private val postEditOrganizationUrl = routes.OrganizationController.organizationEdit()
@@ -123,14 +123,22 @@ class OrganizationController @Inject()(cc: ControllerComponents, userDAO: UserDA
 
     organizationDAO.findById(id) flatMap {
       case Some(o) =>
-        Future {
-          Ok(views.html.organizationDetail(o))
+        for {
+          users <- userOrganizationDAO.findUserByOrganization(id)
+          events <- eventDAO.findEventsByOrganization(id)
+        } yield {
+          Ok(views.html.organizationDetail(
+            o,
+            users.toList,
+            events.toList
+          ))
         }
-
       case None =>
         for {
           o <- organizationDAO.list()
-        } yield Ok(views.html.organizations(o))
+        } yield {
+          Ok(views.html.organizations(o))
+        }
     }
   }
 
@@ -153,7 +161,7 @@ class OrganizationController @Inject()(cc: ControllerComponents, userDAO: UserDA
           if (u.isEmpty) Unauthorized("Oops, you are not connected")
           else if (o.isEmpty) Redirect(routes.UserController.profile)
           // Validate user is memeber of organization
-          else if( !uo.toList.contains(u.get)){
+          else if (!uo.toList.contains(u.get)) {
             Unauthorized("Oops, you are not a part of this organization")
             Redirect(routes.UserController.profile)
           }
@@ -239,5 +247,9 @@ class OrganizationController @Inject()(cc: ControllerComponents, userDAO: UserDA
         )
       case None => Future.successful(Unauthorized("Oops, you are not connected"))
     }
+  }
+
+  def deleteUser(id: Long) = Action { implicit request =>
+    Ok("c'est good")
   }
 }
