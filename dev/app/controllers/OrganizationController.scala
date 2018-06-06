@@ -261,7 +261,25 @@ class OrganizationController @Inject()(cc: ControllerComponents, userDAO: UserDA
     }
   }
 
-  def deleteUser(id: Long) = Action { implicit request =>
-    Ok("c'est good")
+  def deleteUser(organizationId:Long, userId: Long) = Action.async { implicit request =>
+    request.session.get("connected") match {
+
+      // If the session exists
+      case Some(s) =>
+        for{
+          user <- userDAO.findByUsername(s)
+          users <-  userOrganizationDAO.findUserByOrganization(organizationId)
+          uo <- userOrganizationDAO.findByUserAndOrganization(organizationId,userId)
+        }yield{
+          if(users.size > 1 && users.toList.contains(user.get) && uo.isDefined){
+            userOrganizationDAO.delete(uo.get.id.get)
+            Redirect(routes.OrganizationController.organizationDetail(organizationId))
+          }else {
+            Unauthorized("Oops, you are not authorized for this action")
+          }
+        }
+      case None => Future.successful(Unauthorized("Oops, you are not connected"))
+    }
+
   }
 }

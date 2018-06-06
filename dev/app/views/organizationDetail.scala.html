@@ -44,8 +44,8 @@
                                 <td class="text-right">
                                 <td>@event.endDate</td>
                                 <td class="text-right">
-                                <td><a class="btn btn-secondary" role="button" onclick="@routes.EventController.eventDetail(event.id.get)">Show</a></td>
-                                <td><a class="btn btn-danger" role="button" onclick="@routes.EventController.eventDelete(event.id.get)">Delete</a></td>
+                                <td><a class="btn btn-secondary" role="button" href="@routes.EventController.eventDetail(event.id.get)">Show</a></td>
+                                <td><a class="btn btn-danger" role="button" href="@routes.EventController.eventDelete(event.id.get)">Delete</a></td>
                             </tr>
                         }
                         </tbody>
@@ -72,7 +72,7 @@
                                     <td class="text-right">
                                 <td>@user.username</td>
                                     <td class="text-right">
-                                <td><a class="btn btn-danger" role="button" onclick="@routes.OrganizationController.deleteUser(user.id.get)">Leave</a></td>
+                                <td><a class="btn btn-danger" role="button" href="@routes.OrganizationController.deleteUser(organization.id.get,user.id.get)">Leave</a></td>
                                 </tr>
                             }
                         </tbody>

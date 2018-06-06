@@ -52,6 +52,10 @@ class UserOrganizationDAO @Inject()(protected val dbConfigProvider: DatabaseConf
     db.run(query.result)
   }
 
+  def findByUserAndOrganization(organizationId:Long, userId:Long) :Future[Option[UserOrganization]] = {
+   db.run(userOrganizations.filter(x=> x.userId === userId && x.organizationId === organizationId).result.headOption)
+  }
+
   /** Retrieve the list of organizations by user*/
   def findOrganizationByUser(userId:Long):Future[Seq[Organization]] = {
     val query = for {
