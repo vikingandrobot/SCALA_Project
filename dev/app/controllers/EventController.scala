@@ -275,7 +275,7 @@ class EventController @Inject()(cc: ControllerComponents, eventDAO: EventDAO, or
           user <- userDAO.findByUsername(s)
           users <- userOrganizationDAO.findUserByOrganization(eo.get._2.id.get)
         }yield{
-            if(users.toList.contains(user.get)) {
+            if(users.toList.contains(user.get) && eo.isDefined) {
               eventDAO.delete(id)
               Redirect(routes.OrganizationController.organizationDetail(eo.get._2.id.get))
             }else{
@@ -284,7 +284,6 @@ class EventController @Inject()(cc: ControllerComponents, eventDAO: EventDAO, or
         }
       case None => Future { Unauthorized("Oops, you are not connected") }
     }
-
   }
 }
 

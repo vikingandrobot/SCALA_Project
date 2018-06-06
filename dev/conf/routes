@@ -23,7 +23,7 @@ POST    /events/new                 controllers.EventController.eventNew
 GET     /events/:id                 controllers.EventController.eventDetail(id:Long)
 POST    /events/edit                controllers.EventController.eventEdit
 GET     /events/edit                controllers.EventController.eventEditPage(id:Long)
-GET     /events/delete              controllers.EventController.eventDelete(id:Long)
+GET     /events/delete/:id          controllers.EventController.eventDelete(id:Long)
 
 GET     /themes                     controllers.ThemeController.getThemes
 
@@ -33,7 +33,7 @@ POST    /organization/new           controllers.OrganizationController.organizat
 GET     /organization/:id           controllers.OrganizationController.organizationDetail(id:Long)
 GET     /organization/edit/:id      controllers.OrganizationController.organizationEditPage(id:Long)
 POST    /orgnization/edit           controllers.OrganizationController.organizationEdit
-GET    /orgnization/user/delete    controllers.OrganizationController.deleteUser(organizationId:Long, userId:Long)
+GET     /orgnization/user/delete    controllers.OrganizationController.deleteUser(organizationId:Long, userId:Long)
 
 GET     /interest/new               controllers.InterestController.interestNewPage
 POST    /interest/new               controllers.InterestController.interestNew
