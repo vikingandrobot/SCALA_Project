@@ -15,7 +15,8 @@ POST    /login                      controllers.UserController.login
 GET     /logout                     controllers.UserController.logout
 
 GET     /profile                    controllers.UserController.profile
-
+GET     /profile/edit               controllers.UserController.profileUpdatePage
+POST    /profile/edit               controllers.UserController.profileUpdate
 
 GET     /events                     controllers.EventController.eventPage
 GET     /events/new                 controllers.EventController.eventNewPage

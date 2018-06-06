@@ -2,22 +2,79 @@ package controllers
 
 import dao.{InterestDAO, OrganizationDAO, UserDAO, UserOrganizationDAO}
 import javax.inject.{Inject, Singleton}
-import models.{LoginForm, SignUpForm, User}
+import models.{LoginForm, SignUpForm, ProfileUpdateForm, User, UserData}
 import org.mindrot.jbcrypt.BCrypt
 import play.api.mvc._
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
-import scala.util.{Failure, Success}
 
 
 @Singleton
-class UserController @Inject()(cc: ControllerComponents, userDAO: UserDAO, interestDao: InterestDAO, userOrganizationDAO:UserOrganizationDAO) extends AbstractController(cc) with play.api.i18n.I18nSupport {
+class UserController @Inject()(cc: ControllerComponents, userDAO: UserDAO, interestDao: InterestDAO, userOrganizationDAO: UserOrganizationDAO) extends AbstractController(cc) with play.api.i18n.I18nSupport {
 
   // Form post action to set
   private val postJoinUrl = routes.UserController.join()
   private val postLoginUrl = routes.UserController.login()
+  private val postUpdateProfileUrl = routes.UserController.profileUpdate()
 
+  def profileUpdatePage = Action.async { implicit request =>
+    request.session.get("connected") match {
+      case Some(u) =>
+        for (
+          user <- userDAO.findByUsername(u)
+          if (user.isDefined)
+        ) yield {
+
+          val data = UserData(
+            None,
+            user.get.firstName,
+            user.get.lastName,
+            user.get.email,
+            user.get.username,
+            "")
+
+          Ok(views.html.profileEdit(ProfileUpdateForm.form.fill(data), postUpdateProfileUrl))
+        }
+      case None => Future {
+        Unauthorized("Oops, you are not connected")
+      }
+    }
+  }
+
+  def profileUpdate = Action.async { implicit request =>
+    request.session.get("connected") match {
+      case Some(u) =>
+        ProfileUpdateForm.form.bindFromRequest.fold(
+
+          formWithErrors => {
+            Future {
+              BadRequest(views.html.profileEdit(formWithErrors, postUpdateProfileUrl))
+            }
+          },
+
+          formData => {
+            for {
+              oldUser <- userDAO.findByUsername(u)
+            } yield {
+              val newUser = User(
+                oldUser.get.id,
+                formData.firstName,
+                formData.lastName,
+                formData.email,
+                formData.username,
+                formData.password
+              )
+              userDAO.update(oldUser.get.id.get, newUser)
+              Redirect(routes.UserController.profile)
+            }
+          }
+        )
+      case None => Future {
+        Unauthorized("Oops, you are not connected")
+      }
+    }
+  }
 
   /**
     * Display the sign up form.
@@ -104,29 +161,19 @@ class UserController @Inject()(cc: ControllerComponents, userDAO: UserDAO, inter
   }
 
   def profile = Action.async { implicit request =>
-    val username = request.session.get("connected").get
-
-    val user = userDAO.findByUsername(username)
-    user flatMap {
+    request.session.get("connected") match {
       case Some(u) =>
-        for{
-          themes <- interestDao.findThemeByUser(u.id.get)
-          organizations <- userOrganizationDAO.findOrganizationByUser(u.id.get)
-        }yield {
-          Ok(views.html.profile(u, organizations.toList, themes.toList))
+        for {
+          user <- userDAO.findByUsername(u)
+          themes <- interestDao.findThemeByUser(user.get.id.get)
+          organizations <- userOrganizationDAO.findOrganizationByUser(user.get.id.get)
+        } yield {
+          Ok(views.html.profile(user.get, organizations.toList, themes.toList))
         }
-      /* {
-        val interests = interestDao.findThemeByUser(u.id.get)
-        interests map {
-          si =>  Ok(views.html.profile())
-        }
-
-      }*/
-      case _ => {
-        Future{
+      case None =>
+        Future {
           Unauthorized("Oops, your are not conneted")
         }
-      }
     }
   }
 }
