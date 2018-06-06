@@ -1,4 +1,4 @@
-@(form: Form[models.EventData], postUrl: Call, organizations: Seq[Organization])(implicit request: RequestHeader, messagesProvider: MessagesProvider)
+@(form: Form[models.EventData], postUrl: Call, organization: Organization)(implicit request: RequestHeader, messagesProvider: MessagesProvider)
 
 @main("Create an event") {
 <div class="row">
@@ -17,6 +17,12 @@
         @helper.form(postUrl) {
         @helper.CSRF.formField
 
+        @helper.input(form("organizationId"), '_label -> "Organization", '_showConstraints -> false) { (id, name, value, args) =>
+            <select name="organizationId" id="@organization.id">
+                <option value="@organization.id" selected>@organization.name</option>
+            </select>
+        }
+
         @helper.inputText(form("title"), '_label -> "Title", '_showConstraints -> false)
 
         @helper.textarea(form("description"), '_label -> "Description", '_showConstraints -> false)
@@ -32,17 +38,6 @@
         @helper.inputDate(form("endDate"), '_label -> "End date", '_showConstraints -> false)
 
         @helper.textarea(form("scheduleDescription"), '_label -> "Schedule description", '_showConstraints -> false)
-
-
-
-        @helper.input(form("organizationId"), '_label -> "Organization", '_showConstraints -> false) { (id, name, value, args) =>
-
-            <select name="@name" id="@id">
-                @for(o <- organizations) {
-                    <option value="@o.id">@o.name</option>
-                }
-            </select>
-        }
 
         <button>Create</button>
         }

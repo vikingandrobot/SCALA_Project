@@ -19,7 +19,7 @@ GET     /profile/edit               controllers.UserController.profileUpdatePage
 POST    /profile/edit               controllers.UserController.profileUpdate
 
 GET     /events                     controllers.EventController.eventPage
-GET     /events/new                 controllers.EventController.eventNewPage
+GET     /events/new                 controllers.EventController.eventNewPage(organizationId:Long)
 POST    /events/new                 controllers.EventController.eventNew
 GET     /events/:id                 controllers.EventController.eventDetail(id:Long)
 POST    /events/edit                controllers.EventController.eventEdit

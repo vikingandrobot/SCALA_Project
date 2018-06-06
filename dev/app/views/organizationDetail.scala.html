@@ -50,6 +50,7 @@
                         }
                         </tbody>
                     </table>
+                    <a class="btn btn-primary" href="@routes.EventController.eventNewPage(organization.id.get)" role="button">Add an Event</a>
                 </div>
             </div>
             <div class="col-md-8 content">
@@ -65,7 +66,7 @@
                                 <th></th>
                             </tr>
                             @for(user <- users) {
-                                <tr id="row-user-@user.id" studentId="@user.id">
+                                <tr id="row-user-@user.id" userId="@user.id">
                                     <td>@user.firstName</td>
                                     <td class="text-right">
                                 <td>@user.lastName</td>
@@ -77,9 +78,10 @@
                             }
                         </tbody>
                     </table>
+                    <a class="btn btn-primary" href="#" role="button">Add a member</a>
                 </div>
             </div>
         </div>
     </div>
-
+</div>
 }
