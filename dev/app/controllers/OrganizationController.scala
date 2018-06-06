@@ -120,26 +120,38 @@ class OrganizationController @Inject()(cc: ControllerComponents, userDAO: UserDA
   }
 
   def organizationDetail(id: Long) = Action.async { implicit request =>
+    request.session.get("connected") match {
+      case Some(u) =>
+        organizationDAO.findById(id) flatMap {
+          case Some(o) =>
+            for {
+              user <- userDAO.findByUsername(u)
+              users <- userOrganizationDAO.findUserByOrganization(id)
+              events <- eventDAO.findEventsByOrganization(id)
+            } yield {
+              if(users.toList.contains(user.get)) {
+                Ok(views.html.organizationDetail(
+                  o,
+                  users.distinct.toList,
+                  events.toList
+                ))
+              }else {
+                Unauthorized("Oops, you are not authorized to acces this organization")
+              }
+            }
+          case None =>
+            for {
+              o <- organizationDAO.list()
+            } yield {
+              Ok(views.html.organizations(o))
+            }
+        }
 
-    organizationDAO.findById(id) flatMap {
-      case Some(o) =>
-        for {
-          users <- userOrganizationDAO.findUserByOrganization(id)
-          events <- eventDAO.findEventsByOrganization(id)
-        } yield {
-          Ok(views.html.organizationDetail(
-            o,
-            users.toList,
-            events.toList
-          ))
-        }
-      case None =>
-        for {
-          o <- organizationDAO.list()
-        } yield {
-          Ok(views.html.organizations(o))
-        }
+      case None => Future { Unauthorized("Oops, you are not connected") }
     }
+
+
+
   }
 
   def organizationEditPage(id: Long) = Action.async { implicit request =>

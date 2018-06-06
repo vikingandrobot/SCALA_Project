@@ -264,5 +264,27 @@ class EventController @Inject()(cc: ControllerComponents, eventDAO: EventDAO, or
         } yield Ok(views.html.events(e))
     }
   }
+
+  def eventDelete(id:Long) = Action.async{ implicit request =>
+    request.session.get("connected") match {
+
+      // If the session exists
+      case Some(s) =>
+        for{
+          eo <-  eventDAO.findByIdWithOrganization(id)
+          user <- userDAO.findByUsername(s)
+          users <- userOrganizationDAO.findUserByOrganization(eo.get._2.id.get)
+        }yield{
+            if(users.toList.contains(user.get)) {
+              eventDAO.delete(id)
+              Redirect(routes.OrganizationController.organizationDetail(eo.get._2.id.get))
+            }else{
+              Unauthorized("Oops, you are not authorized to acces this organization")
+            }
+        }
+      case None => Future { Unauthorized("Oops, you are not connected") }
+    }
+
+  }
 }
 

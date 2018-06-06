@@ -32,6 +32,7 @@
                             <th>Start Date</th>
                             <th>End Date</th>
                             <th></th>
+                            <th></th>
                         </tr>
                         @for(event <- events) {
                             <tr id="row-user-@event.id" studentId="@event.id">
@@ -44,6 +45,7 @@
                                 <td>@event.endDate</td>
                                 <td class="text-right">
                                 <td><a class="btn btn-secondary" role="button" onclick="@routes.EventController.eventDetail(event.id.get)">Show</a></td>
+                                <td><a class="btn btn-danger" role="button" onclick="@routes.EventController.eventDelete(event.id.get)">Delete</a></td>
                             </tr>
                         }
                         </tbody>
