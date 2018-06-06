@@ -73,5 +73,8 @@ class InterestDAO @Inject()(protected val dbConfigProvider: DatabaseConfigProvid
   def delete(id: Long): Future[Int] =
     db.run(interests.filter(_.id === id).delete)
 
+  def findByUserAndTheme(themeId:Long, userId:Long) :Future[Option[Interest]] = {
+    db.run(interests.filter(x=> x.themeId === themeId && x.userId === userId).result.headOption)
+  }
 
 }

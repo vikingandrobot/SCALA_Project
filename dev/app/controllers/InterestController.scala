@@ -79,7 +79,7 @@ class InterestController @Inject()(cc: ControllerComponents, interestDAO: Intere
     }
   }
 
-  def interestDelete(id: Long) = Action.async { implicit request =>
+  def interestDelete(themeId: Long) = Action.async { implicit request =>
     // Get the connected user
     val user: Future[Option[User]] = {
 
@@ -101,10 +101,12 @@ class InterestController @Inject()(cc: ControllerComponents, interestDAO: Intere
       case Some(u) =>
         Future {
           for (
-            i <- interestDAO.findById(id)
-            if (i.isDefined)
+            ui <- interestDAO.findByUserAndTheme(themeId, u.id.get)
           ) yield {
-            if (i.get.userId.equals(u.id.get)) interestDAO.delete(id)
+            if (ui.isDefined) {
+              interestDAO.delete(ui.get.id.get)
+              Redirect(routes.UserController.profile)
+            }
             else Future.successful(Unauthorized("Oops, an error has occured"))
           }
           Redirect(routes.UserController.profile)

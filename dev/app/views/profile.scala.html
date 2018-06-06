@@ -2,7 +2,7 @@
 * This template takes a single argument, a String containing a
 * message to display.
 *@
-@()(implicit request: play.api.mvc.RequestHeader)
+@(user:User, organizations:Seq[Organization], themes: Seq[Theme])(implicit request: play.api.mvc.RequestHeader)
 
 @*
 * Call the `main` template with two arguments. The first
@@ -34,19 +34,19 @@
                             <tbody>
                                 <tr>
                                     <td>Username</td>
-                                    <td>Valomat</td>
+                                    <td>@user.username</td>
                                 </tr>
                                 <tr>
                                     <td>First name</td>
-                                    <td>Mathieu</td>
+                                    <td>@user.firstName</td>
                                 </tr>
                                 <tr>
                                     <td>Last name</td>
-                                    <td>Monteverde</td>
+                                    <td>@user.lastName</td>
                                 </tr>
                                 <tr>
                                     <td>Email</td>
-                                    <td>mathieu.monteverde[at]gmail.com</td>
+                                    <td>@user.email</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -59,25 +59,15 @@
                         <h1>My organizations</h1>
                         <table class="table">
                             <tbody>
-                                <tr>
-                                    <td>Ville de Lausanne</td>
-                                    <td class="text-right"><a class="btn btn-secondary" href="#" role="button">Manage</a></td>
-                                </tr>
-                                <tr>
-                                    <td>Association des Joyeux Loustiques</td>
-                                    <td class="text-right"><a class="btn btn-secondary" href="#" role="button">Manage</a></td>
-                                </tr>
-                                <tr>
-                                    <td>Party Hard Corporation</td>
-                                    <td class="text-right"><a class="btn btn-secondary" href="#" role="button">Manage</a></td>
-                                </tr>
-                                <tr>
-                                    <td>Pure Fun Parade</td>
-                                    <td class="text-right"><a class="btn btn-secondary" href="#" role="button">Manage</a></td>
-                                </tr>
+                                @for(organization <- organizations) {
+                                    <tr id="row-organization" organizationId="@organization.id">
+                                        <td>@organization.name</td>
+                                        <td class="text-right"><a class="btn btn-secondary" href="@routes.OrganizationController.organizationDetail(organization.id.get)" role="button">Manage</a></td>
+                                    </tr>
+                                }
                             </tbody>
                         </table>
-                        <a class="btn btn-primary" href="#" role="button">Create an organization</a>
+                        <a class="btn btn-primary" href="@routes.OrganizationController.organizationNewPage()" role="button">Create an organization</a>
                     </div>
                 </div>
 
@@ -86,21 +76,15 @@
                         <h1>My interests</h1>
                         <table class="table">
                             <tbody>
-                                <tr>
-                                    <td>Musique</td>
-                                    <td class="text-right"><a class="btn btn-danger" href="#" role="button">Delete</a></td>
-                                </tr>
-                                <tr>
-                                    <td>Fête</td>
-                                    <td class="text-right"><a class="btn btn-danger" href="#" role="button">Delete</a></td>
-                                </tr>
-                                <tr>
-                                    <td>Festival</td>
-                                    <td class="text-right"><a class="btn btn-danger" href="#" role="button">Delete</a></td>
-                                </tr>
+                                @for(theme <- themes) {
+                                    <tr>
+                                        <td>@theme.name</td>
+                                        <td class="text-right"><a class="btn btn-danger" href="@routes.InterestController.interestDelete(theme.id.get)" role="button">Delete</a></td>
+                                    </tr>
+                                }
                             </tbody>
                         </table>
-                        <a class="btn btn-primary" href="#" role="button">Add an interest</a>
+                        <a class="btn btn-primary" href="@routes.InterestController.interestNewPage" role="button">Add an interest</a>
                     </div>
                 </div>
             </div>
