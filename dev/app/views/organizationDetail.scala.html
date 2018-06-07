@@ -45,6 +45,7 @@
                                 <td>@event.endDate</td>
                                 <td class="text-right">
                                 <td><a class="btn btn-secondary" role="button" href="@routes.EventController.eventDetail(event.id.get)">Show</a></td>
+                                <td><a class="btn btn-secondary" role="button" href="@routes.EventController.eventEditPage(event.id.get)">Edit</a></td>
                                 <td><a class="btn btn-danger" role="button" href="@routes.EventController.eventDelete(event.id.get)">Delete</a></td>
                             </tr>
                         }
