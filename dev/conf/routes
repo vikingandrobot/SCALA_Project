@@ -23,7 +23,7 @@ GET     /events/new                 controllers.EventController.eventNewPage(org
 POST    /events/new                 controllers.EventController.eventNew
 GET     /events/:id                 controllers.EventController.eventDetail(id:Long)
 POST    /events/edit                controllers.EventController.eventEdit
-GET     /events/edit                controllers.EventController.eventEditPage(id:Long)
+GET     /events/edit/:id            controllers.EventController.eventEditPage(id:Long)
 GET     /events/delete/:id          controllers.EventController.eventDelete(id:Long)
 
 GET     /themes                     controllers.ThemeController.getThemes
