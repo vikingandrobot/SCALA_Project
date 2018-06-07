@@ -58,7 +58,7 @@ class EventController @Inject()(cc: ControllerComponents, eventDAO: EventDAO, or
 
           // On fail return the form with errors
           formWithErrors => {
-            val orgId = formWithErrors.data.get("organisationId").get.toLong
+            val orgId = formWithErrors.data.get("organizationId").get.toLong
             val org = organizationDAO.findById(orgId)
             org flatMap {
               case Some(o) => Future{
