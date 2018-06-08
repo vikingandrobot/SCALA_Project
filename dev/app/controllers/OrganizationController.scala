@@ -2,7 +2,7 @@ package controllers
 
 import dao.{EventDAO, OrganizationDAO, UserDAO, UserOrganizationDAO}
 import javax.inject.{Inject, Singleton}
-import models.{Organization, OrganizationForm, OrgnizationData, User, UserOrganization}
+import models.{Organization, OrganizationForm, OrganizationData, User, UserOrganization}
 import play.api.mvc.{AbstractController, ControllerComponents}
 
 import scala.concurrent.ExecutionContext.Implicits.global
@@ -181,7 +181,7 @@ class OrganizationController @Inject()(cc: ControllerComponents, userDAO: UserDA
 
             val organization = o.get
 
-            val data = OrgnizationData(
+            val data = OrganizationData(
               organization.id,
               organization.organizationType,
               organization.name,

@@ -33,8 +33,8 @@ GET     /organization/new           controllers.OrganizationController.organizat
 POST    /organization/new           controllers.OrganizationController.organizationNew
 GET     /organization/:id           controllers.OrganizationController.organizationDetail(id:Long)
 GET     /organization/edit/:id      controllers.OrganizationController.organizationEditPage(id:Long)
-POST    /orgnization/edit           controllers.OrganizationController.organizationEdit
-GET     /orgnization/user/delete    controllers.OrganizationController.deleteUser(organizationId:Long, userId:Long)
+POST    /organization/edit           controllers.OrganizationController.organizationEdit
+GET     /organization/user/delete    controllers.OrganizationController.deleteUser(organizationId:Long, userId:Long)
 
 GET     /interest/new               controllers.InterestController.interestNewPage
 POST    /interest/new               controllers.InterestController.interestNew
