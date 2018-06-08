@@ -41,7 +41,7 @@
 
         <select name="@name" id="@id">
             @for(o <- organizations) {
-                @if(form("id").value.get.toInt == o.id.get)  {
+                @if(form("organizationId").value.get.toInt == o.id.get)  {
                     <option value="@o.id" selected>@o.name</option>
                 } else {
                     <option value="@o.id">@o.name</option>
