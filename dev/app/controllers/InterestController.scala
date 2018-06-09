@@ -64,8 +64,15 @@ class InterestController @Inject()(cc: ControllerComponents, interestDAO: Intere
       case Some(u) =>
         NewInterestForm.form.bindFromRequest.fold(
           formWithErrors => {
-            Future {
-              BadRequest(views.html.interestNew(formWithErrors, postNewInterestUrl, Seq.empty))
+
+            // Get the themes
+            val themes = themeDAO.list()
+
+            for {
+              t <-themes
+            } yield {
+                val list: Seq[(String, String)] = t.map(x => (x.id.get.toString, x.name))
+                BadRequest(views.html.interestNew(formWithErrors, postNewInterestUrl, list))
             }
           },
           formData => {
