@@ -1,4 +1,4 @@
-@(form: Form[models.EventData], postUrl: Call, organization: Organization)(implicit request: RequestHeader, messagesProvider: MessagesProvider)
+@(form: Form[models.EventData], postUrl: Call, organizations: Seq[Organization], organization: Option[Organization])(implicit request: RequestHeader, messagesProvider: MessagesProvider)
 
 @main("Create an event") {
 <div class="row">
@@ -18,9 +18,26 @@
         @helper.CSRF.formField
 
         @helper.input(form("organizationId"), '_label -> "Organization", '_showConstraints -> false) { (id, name, value, args) =>
-            <select name="organizationId" id="@organization.id">
-                <option value="@organization.id" selected>@organization.name</option>
-            </select>
+
+
+        <select name="@name" id="@id">
+
+            @if(!organization.isDefined)  {
+            <option selected>Choose an organization</option>
+            }
+
+            @for(o <- organizations) {
+                @if(organization.isDefined && o.id.get == organization.get.id.get)  {
+                <option value="@o.id" selected>@o.name</option>
+                } else {
+                    @if(value.isDefined && value.get.matches("^\\d+$") && o.id.get == value.get.toLong) {
+                    <option value="@o.id" selected>@o.name</option>
+                    } else {
+                    <option value="@o.id">@o.name</option>
+                    }
+                }
+            }
+        </select>
         }
 
         @helper.inputText(form("title"), '_label -> "Title", '_showConstraints -> false)

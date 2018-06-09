@@ -58,17 +58,16 @@ class EventController @Inject()(cc: ControllerComponents, eventDAO: EventDAO, or
 
           // On fail return the form with errors
           formWithErrors => {
-            val orgId = formWithErrors.data.get("organizationId").get.toLong
-            val org = organizationDAO.findById(orgId)
-            org flatMap {
-              case Some(o) => Future{
-                BadRequest(views.html.eventNew(formWithErrors, postNewEventUrl,o))
-              }
-              case None => Future{
-                Unauthorized("Oops, you are not a member of this organization")
-              }
-            }
+
             // Get the user's organizations
+            val organizations = userOrganizationDAO.findOrganizationByUser(u.id.get)
+
+            for {
+              o <- organizations
+            } yield {
+              if (o.isEmpty) Unauthorized("Oops, you are not a part of an organization")
+              else BadRequest(views.html.eventNew(formWithErrors, postNewEventUrl, o, None))
+            }
           },
 
           // On success
@@ -104,7 +103,7 @@ class EventController @Inject()(cc: ControllerComponents, eventDAO: EventDAO, or
   }
 
 
-  def eventNewPage(organizationId:Long) = Action.async { implicit request =>
+  def eventNewPage(organizationId: Option[Long]) = Action.async { implicit request =>
 
     // Get the session
     request.session.get("connected") match {
@@ -113,15 +112,17 @@ class EventController @Inject()(cc: ControllerComponents, eventDAO: EventDAO, or
       case Some(s) =>
         for {
           u <- userDAO.findByUsername(s)
-          o <- organizationDAO.findById(organizationId)
-          uo <-
+          o <-
+            if(organizationId.isDefined) organizationDAO.findById(organizationId.get)
+            else Future.successful(None)
+          os <-
             if (u.isDefined) userOrganizationDAO.findOrganizationByUser(u.get.id.get)
             else Future.successful(Seq.empty)
         } yield {
 
           if (u.isEmpty) Unauthorized("Oops, you are not connected")
-          else if (o.isEmpty) Unauthorized("Oops, you are not a part of an organization")
-          else  Ok(views.html.eventNew(EventForm.form, postNewEventUrl, o.get))
+          else if (os.isEmpty) Unauthorized("Oops, you are not a part of an organization")
+          else  Ok(views.html.eventNew(EventForm.form, postNewEventUrl, os, o))
         }
 
       // If the session does not exist
