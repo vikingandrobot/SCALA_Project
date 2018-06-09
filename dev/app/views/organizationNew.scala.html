@@ -5,26 +5,26 @@
     <div class="col">
     <h1>Create an organization</h1>
 
-            @* Display Global errors *@
-            @if(form.hasGlobalErrors) {
-            @form.globalErrors.map { error: FormError =>
+    @* Display Global errors *@
+    @if(form.hasGlobalErrors) {
+        @form.globalErrors.map { error: FormError =>
             <div class="alert alert-danger" role="alert">
                 @error.message
             </div>
         }
     }
 
-    @helper.form(postUrl) {
-        @helper.CSRF.formField
+    @b4.vertical.formCSRF(postUrl) { implicit vfc =>
 
-        @helper.inputText(form("organizationType"), '_label -> "Type", '_showConstraints -> false)
+        @b4.text( form("organizationType"), '_label -> "Type")
 
-        @helper.inputText(form("name"), '_label -> "Name", '_showConstraints -> false)
+        @b4.text( form("name"), '_label -> "Name")
 
-        @helper.inputText(form("address"), '_label -> "Address", '_showConstraints -> false)
+        @b4.text( form("address"), '_label -> "Address")
 
-        <button>Create</button>
+        @b4.submit('class -> "btn btn-success"){ Create organization }
     }
+
     </div>
 </div>
 }
