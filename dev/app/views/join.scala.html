@@ -1,3 +1,5 @@
+@import b4._
+
 @(form: Form[models.UserData], postUrl: Call)(implicit request: RequestHeader, messagesProvider: MessagesProvider)
 
 @main("Join") {
@@ -5,20 +7,15 @@
         <div class="col">
             <h1>Join Project</h1>
 
-            @helper.form(postUrl) {
-            @helper.CSRF.formField
+            @b4.vertical.formCSRF(postUrl) { implicit vfc =>
 
-            @helper.inputText(form("firstName"), '_label -> "First name", '_showConstraints -> false)
+                @b4.text( form("firstName"), '_label -> "First name")
+                @b4.text( form("lastName"), '_label -> "Last name")
+                @b4.email( form("email"), '_label -> "Email", 'placeholder -> "example@mail.com" )
+                @b4.text( form("username"), '_label -> "Username")
+                @b4.password( form("password"), '_label -> "Password", 'placeholder -> "Password", '_help -> "Use min 8 characters" )
 
-            @helper.inputText(form("lastName"), '_label -> "Last name", '_showConstraints -> false)
-
-            @helper.inputText(form("email"), '_label -> "Email", '_showConstraints -> false)
-
-            @helper.inputText(form("username"), '_label -> "Username", '_showConstraints -> false)
-
-            @helper.inputPassword(form("password"), '_label -> "Password", '_showConstraints -> false)
-
-            <button>Sign up</button>
+                @b4.submit('class -> "btn btn-default"){ Sign up }
             }
         </div>
     </div>
