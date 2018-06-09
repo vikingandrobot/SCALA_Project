@@ -19,6 +19,20 @@
 
         <input type="hidden" name="id" value='@form("id").value' >
 
+        @helper.input(form("organizationId"), '_label -> "Organization", '_showConstraints -> false) { (id, name, value, args) =>
+
+        <select name="@name" id="@id">
+            @for(o <- organizations) {
+            @if(form("organizationId").value.get.toInt == o.id.get)  {
+            <option value="@o.id" selected>@o.name</option>
+            } else {
+            <option value="@o.id">@o.name</option>
+            }
+
+            }
+        </select>
+        }
+
         @helper.inputText(form("title"), '_label -> "Title", '_showConstraints -> false)
 
         @helper.textarea(form("description"), '_label -> "Description", '_showConstraints -> false)
@@ -34,22 +48,6 @@
         @helper.inputDate(form("endDate"), '_label -> "End date", '_showConstraints -> false)
 
         @helper.textarea(form("scheduleDescription"), '_label -> "Schedule description", '_showConstraints -> false)
-
-
-
-        @helper.input(form("organizationId"), '_label -> "Organization", '_showConstraints -> false) { (id, name, value, args) =>
-
-        <select name="@name" id="@id">
-            @for(o <- organizations) {
-                @if(form("organizationId").value.get.toInt == o.id.get)  {
-                    <option value="@o.id" selected>@o.name</option>
-                } else {
-                    <option value="@o.id">@o.name</option>
-                }
-
-            }
-        </select>
-        }
 
         <button>Edit</button>
         }
