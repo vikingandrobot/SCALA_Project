@@ -12,6 +12,7 @@
                 </div>
             </div>
         </div>
+
         <div class="row event-meta">
             <div class="col-md-3 col-sm-6">
                 <div class="organization">@organization.organizationType</div>
@@ -20,30 +21,35 @@
                 <div class="region">@organization.address</div>
             </div>
         </div>
-        <div class="col-md-8 content">
-            <div id="Events" class="row">
-                <div class="info-section col-md-12">
-                    <h1>Events of organization</h1>
-                    <table class="table">
+
+        <div id="Events" class="row">
+            <div class="col-md-12 content">
+                <h1>Events of organization</h1>
+                <a class="btn btn-primary" href="@routes.EventController.eventNewPage(Option(organization.id.get))" role="button">Add an Event</a>
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th scope="col">Title</th>
+                                <th scope="col">Region</th>
+                                <th scope="col">Start Date</th>
+                                <th scope="col">End Date</th>
+                                <th scope="col"></th>
+                                <th scope="col"></th>
+                                <th scope="col"></th>
+                            </tr>
+                        </thead>
                         <tbody>
-                        <tr>
-                            <th>Title</th>
-                            <th>Region</th>
-                            <th>Start Date</th>
-                            <th>End Date</th>
-                            <th></th>
-                            <th></th>
-                        </tr>
                         @for(event <- events) {
                             <tr id="row-user-@event.id" eventId="@event.id">
                                 <td>@event.title</td>
-                                <td class="text-right">
+
                                 <td>@event.region</td>
-                                <td class="text-right">
+
                                 <td>@event.startDate</td>
-                                <td class="text-right">
+
                                 <td>@event.endDate</td>
-                                <td class="text-right">
+
                                 <td><a class="btn btn-secondary" role="button" href="@routes.EventController.eventDetail(event.id.get)">Show</a></td>
                                 <td><a class="btn btn-secondary" role="button" href="@routes.EventController.eventEditPage(event.id.get)">Edit</a></td>
                                 <td><a class="btn btn-danger" role="button" href="@routes.EventController.eventDelete(event.id.get)">Delete</a></td>
@@ -51,38 +57,40 @@
                         }
                         </tbody>
                     </table>
-                    <a class="btn btn-primary" href="@routes.EventController.eventNewPage(Option(organization.id.get))" role="button">Add an Event</a>
                 </div>
             </div>
-            <div class="col-md-8 content">
-            <div id="Members" class="row">
-                <div class="info-section col-md-12">
-                    <h1>Members of organization</h1>
-                    <table class="table">
-                        <tbody>
+        </div>
+
+        <div id="Members" class="row">
+            <div class="col-md-12 content">
+
+                <h1>Members of organization</h1>
+                <a class="btn btn-primary" href="#" role="button">Add a member</a>
+                <div class="table-responsive">
+                    <table class="table table-striped">
+
+                        <thead>
                             <tr>
-                                <th>First name</th>
-                                <th>Last name</th>
-                                <th>Username</th>
-                                <th></th>
+                                <th scope="col">First name</th>
+                                <th scope="col">Last name</th>
+                                <th scope="col">Username</th>
+                                <th scope="col"></th>
                             </tr>
+                        </thead>
+                        <tbody>
                             @for(user <- users) {
                                 <tr id="row-user-@user.id" userId="@user.id">
                                     <td>@user.firstName</td>
-                                    <td class="text-right">
-                                <td>@user.lastName</td>
-                                    <td class="text-right">
-                                <td>@user.username</td>
-                                    <td class="text-right">
-                                <td><a class="btn btn-danger" role="button" href="@routes.OrganizationController.deleteUser(organization.id.get,user.id.get)">Leave</a></td>
+                                    <td>@user.lastName</td>
+                                    <td>@user.username</td>
+                                    <td><a class="btn btn-danger" role="button" href="@routes.OrganizationController.deleteUser(organization.id.get,user.id.get)">Leave</a></td>
                                 </tr>
                             }
                         </tbody>
                     </table>
-                    <a class="btn btn-primary" href="#" role="button">Add a member</a>
                 </div>
             </div>
         </div>
     </div>
-</div>
+
 }
