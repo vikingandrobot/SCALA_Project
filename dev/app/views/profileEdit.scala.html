@@ -5,21 +5,22 @@
         <div class="col">
             <h1>Update my Profile</h1>
 
-            @helper.form(postUrl) {
-                @helper.CSRF.formField
 
-                @helper.inputText(form("firstName"), '_label -> "First name", '_showConstraints -> false)
+            @b4.vertical.formCSRF(postUrl) { implicit vfc =>
 
-                @helper.inputText(form("lastName"), '_label -> "Last name", '_showConstraints -> false)
+                @b4.text( form("firstName"), '_label -> "First name")
 
-                @helper.inputText(form("email"), '_label -> "Email", '_showConstraints -> false)
+                @b4.text( form("lastName"), '_label -> "Last name")
 
-                @helper.inputText(form("username"), '_label -> "Username", '_showConstraints -> false)
+                @b4.email( form("email"), '_label -> "Email", 'placeholder -> "example@mail.com" )
 
-                @helper.inputPassword(form("password"), '_label -> "Password", '_showConstraints -> false)
+                @b4.text( form("username"), '_label -> "Username")
 
-                <button>Update profile</button>
+                @b4.password( form("password"), '_label -> "Password", 'placeholder -> "Password", '_help -> "Use min 8 characters" )
+
+                @b4.submit('class -> "btn btn-success"){ Edit profile }
             }
+            
         </div>
     </div>
 }
