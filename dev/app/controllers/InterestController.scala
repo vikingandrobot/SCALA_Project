@@ -29,7 +29,10 @@ class InterestController @Inject()(cc: ControllerComponents, interestDAO: Intere
         } yield {
 
           if (u.isEmpty) Unauthorized("Oops, you are not connected")
-          else Ok(views.html.interestNew(NewInterestForm.form, postNewInterestUrl, t))
+          else {
+            val list: Seq[(String, String)] = t.map(x => (x.id.get.toString, x.name))
+            Ok(views.html.interestNew(NewInterestForm.form, postNewInterestUrl, list))
+          }
         }
 
       // If the session does not exist

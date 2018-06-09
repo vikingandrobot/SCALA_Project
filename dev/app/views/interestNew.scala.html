@@ -1,8 +1,8 @@
-@(form: Form[models.InterestData], postUrl: Call, themes:Seq[Theme])(implicit request: RequestHeader, messagesProvider: MessagesProvider)
+@(form: Form[models.InterestData], postUrl: Call, themes:Seq[(String, String)])(implicit request: RequestHeader, messagesProvider: MessagesProvider)
 
 @main("Interest") {
 
-    <h1>Add an interestt</h1>
+    <h1>Add an interest</h1>
 
     @* Display Global errors *@
     @if(form.hasGlobalErrors) {
@@ -13,19 +13,11 @@
         }
     }
 
-    @helper.form(postUrl) {
-        @helper.CSRF.formField
+    @b4.vertical.formCSRF(postUrl) { implicit vfc =>
+        @b4.select( form("themeId"), options = themes, '_label -> "Choose a theme", '_default -> "Select a theme")
 
 
-        @helper.input(form("themeId"), '_label -> "Theme", '_showConstraints -> false) { (id, name, value, args) =>
-
-            <select name="@name" id="@id">
-            @for(t <- themes) {
-                <option value="@t.id">@t.name</option>
-            }
-            </select>
-        }
-
-        <button>Insert</button>
+        @b4.submit('class -> "btn btn-success"){ Create interest }
     }
+
 }
