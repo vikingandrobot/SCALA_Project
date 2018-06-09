@@ -99,18 +99,13 @@ class InterestController @Inject()(cc: ControllerComponents, interestDAO: Intere
 
     user flatMap {
       case Some(u) =>
-        Future {
-          for (
-            ui <- interestDAO.findByUserAndTheme(themeId, u.id.get)
-          ) yield {
-            if (ui.isDefined) {
-              interestDAO.delete(ui.get.id.get)
-              Redirect(routes.UserController.profile)
-            }
-            else Future.successful(Unauthorized("Oops, an error has occured"))
-          }
-          Redirect(routes.UserController.profile)
+        interestDAO.findByUserAndTheme(themeId, u.id.get) map {
+          case Some(i) =>
+            interestDAO.delete(i.id.get)
+            Redirect(routes.UserController.profile).flashing("success" -> "The item has been deleted")
+          case None => Unauthorized("Oops, an error has occured")
         }
+
       case None => Future.successful(Unauthorized("Oops, you are not connected"))
     }
   }

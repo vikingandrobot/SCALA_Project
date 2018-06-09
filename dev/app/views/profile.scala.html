@@ -1,22 +1,16 @@
-@*
-* This template takes a single argument, a String containing a
-* message to display.
-*@
-@(user:User, organizations:Seq[Organization], themes: Seq[Theme])(implicit request: play.api.mvc.RequestHeader)
+@(user:User, organizations:Seq[Organization], themes: Seq[Theme])(implicit request: play.api.mvc.RequestHeader, flash: Flash)
 
-@*
-* Call the `main` template with two arguments. The first
-* argument is a `String` with the title of the page, the second
-* argument is an `Html` object containing the body of the page.
-*@
 @main("L'Event en poupe !") {
+
+
 
     <div class="container">
         <div class="row">
-            <div id="profile-cover" class="col">
+            <div id="profile-cover" class="col-md-12">
                 <h1>My profile</h1>
             </div>
         </div>
+
         <div id="profile-detail" class="row">
             <div class="col-md-4">
                 <div class="row">
@@ -24,9 +18,22 @@
                         <div class="profile-picture"></div>
                     </div>
                 </div>
-
             </div>
             <div class="col-md-8 content">
+
+                @if(flash.get("success").isDefined) {
+                <div id="message-alert" class="row">
+                    <div class="col-md-12">
+                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                            @flash.get("success")
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                }
+
                 <div id="personnal-informations" class="row">
                     <div class="info-section col-md-12">
                         <h1>Personal informations</h1>
