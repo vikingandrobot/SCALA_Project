@@ -1,4 +1,6 @@
-@(form: Form[models.EventData], postUrl: Call, organizations: Seq[Organization], organization: Option[Organization])(implicit request: RequestHeader, messagesProvider: MessagesProvider)
+@import b4._
+
+@(form: Form[models.EventData], postUrl: Call, organizations: Seq[(String, String)], organization: Option[Organization])(implicit request: RequestHeader, messagesProvider: MessagesProvider)
 
 @main("Create an event") {
 <div class="row">
@@ -7,56 +9,30 @@
 
         @* Display Global errors *@
         @if(form.hasGlobalErrors) {
-        @form.globalErrors.map { error: FormError =>
-        <div class="alert alert-danger" role="alert">
-            @error.message
-        </div>
+            @form.globalErrors.map { error: FormError =>
+            <div class="alert alert-danger" role="alert">
+                @error.message
+            </div>
+            }
         }
-        }
 
-        @helper.form(postUrl) {
-        @helper.CSRF.formField
-
-        @helper.input(form("organizationId"), '_label -> "Organization", '_showConstraints -> false) { (id, name, value, args) =>
-
-
-        <select name="@name" id="@id">
-
-            @if(!organization.isDefined)  {
-            <option selected>Choose an organization</option>
+        @b4.vertical.formCSRF(postUrl) { implicit vfc =>
+            @if(organization.isDefined) {
+                @b4.select( form("organizationId"), options = organizations, '_label -> "Choose an organization", '_default -> "Select an organization", 'value -> organization.get.id.get.toString)
+            } else {
+                @b4.select( form("organizationId"), options = organizations, '_label -> "Choose an organization", '_default -> "Select an organization")
             }
 
-            @for(o <- organizations) {
-                @if(organization.isDefined && o.id.get == organization.get.id.get)  {
-                <option value="@o.id" selected>@o.name</option>
-                } else {
-                    @if(value.isDefined && value.get.matches("^\\d+$") && o.id.get == value.get.toLong) {
-                    <option value="@o.id" selected>@o.name</option>
-                    } else {
-                    <option value="@o.id">@o.name</option>
-                    }
-                }
-            }
-        </select>
-        }
+            @b4.text( form("title"), '_label -> "Title")
+            @b4.textarea( form("description"), '_label -> "Description", 'rows -> 5 )
+            @b4.text( form("price"), '_label -> "Price")
+            @b4.text( form("address"), '_label -> "Address")
+            @b4.text( form("region"), '_label -> "Region")
+            @b4.date( form("startDate"), '_label -> "Start date" )
+            @b4.date( form("endDate"), '_label -> "End date" )
+            @b4.textarea( form("scheduleDescription"), '_label -> "Schedule description", 'rows -> 5 )
 
-        @helper.inputText(form("title"), '_label -> "Title", '_showConstraints -> false)
-
-        @helper.textarea(form("description"), '_label -> "Description", '_showConstraints -> false)
-
-        @helper.inputText(form("price"), '_label -> "Price", '_showConstraints -> false)
-
-        @helper.inputText(form("address"), '_label -> "Address", '_showConstraints -> false)
-
-        @helper.inputText(form("region"), '_label -> "Region", '_showConstraints -> false)
-
-        @helper.inputDate(form("startDate"), '_label -> "Start date", '_showConstraints -> false)
-
-        @helper.inputDate(form("endDate"), '_label -> "End date", '_showConstraints -> false)
-
-        @helper.textarea(form("scheduleDescription"), '_label -> "Schedule description", '_showConstraints -> false)
-
-        <button>Create</button>
+            @b4.submit('class -> "btn btn-success"){ Create event }
         }
     </div>
 </div>

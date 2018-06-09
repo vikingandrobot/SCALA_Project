@@ -66,7 +66,10 @@ class EventController @Inject()(cc: ControllerComponents, eventDAO: EventDAO, or
               o <- organizations
             } yield {
               if (o.isEmpty) Unauthorized("Oops, you are not a part of an organization")
-              else BadRequest(views.html.eventNew(formWithErrors, postNewEventUrl, o, None))
+              else {
+                val list: Seq[(String, String)] = o.map(x => (x.id.get.toString, x.name))
+                BadRequest(views.html.eventNew(formWithErrors, postNewEventUrl, list, None))
+              }
             }
           },
 
@@ -122,7 +125,12 @@ class EventController @Inject()(cc: ControllerComponents, eventDAO: EventDAO, or
 
           if (u.isEmpty) Unauthorized("Oops, you are not connected")
           else if (os.isEmpty) Unauthorized("Oops, you are not a part of an organization")
-          else  Ok(views.html.eventNew(EventForm.form, postNewEventUrl, os, o))
+          else  {
+
+            val list: Seq[(String, String)] = os.map(x => (x.id.get.toString, x.name))
+
+            Ok(views.html.eventNew(EventForm.form, postNewEventUrl, list, o))
+          }
         }
 
       // If the session does not exist
