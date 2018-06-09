@@ -176,7 +176,11 @@ class EventController @Inject()(cc: ControllerComponents, eventDAO: EventDAO, or
               o <- organizations
             } yield {
               if (o.isEmpty) Unauthorized("Oops, you are not a part of an organization")
-              else BadRequest(views.html.eventEdit(formWithErrors, postEditEventUrl, o))
+              else {
+                val list: Seq[(String, String)] = o.map(x => (x.id.get.toString, x.name))
+
+                BadRequest(views.html.eventEdit(formWithErrors, postEditEventUrl, list))
+              }
             }
           },
 
@@ -254,7 +258,9 @@ class EventController @Inject()(cc: ControllerComponents, eventDAO: EventDAO, or
               event.organizationId
             )
 
-            Ok(views.html.eventEdit(EventForm.form.fill(data), postEditEventUrl, o))
+            val list: Seq[(String, String)] = o.map(x => (x.id.get.toString, x.name))
+
+            Ok(views.html.eventEdit(EventForm.form.fill(data), postEditEventUrl, list))
           }
         }
 
