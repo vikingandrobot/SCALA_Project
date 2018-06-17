@@ -254,5 +254,85 @@
 		
 		\subsection{Fonctionnalités implémentées}
 		\label{subsec:fonctionnalites_implementees}
+		
+			Cette section présente les fonctionnalités du cahier des charges qui ont été implémentées.
+		
+			\subsubsection{Affichage et tri d'événements}
+			\label{subsubsec:affichage_tri_evenements}
+			
+			\begin{itemize}
+				\item Voir une liste d'événements
+				\item Filtrer une liste d'événements par date
+				\begin{itemize}
+					\item Choisir une date exacte
+					\item Choisir une plage avec date de début et date de fin
+				\end{itemize}
+				\item Filtrer une liste d'événements par lieu géographique
+				\begin{itemize}
+					\item Choisir une ville départ
+				\end{itemize}
+				\item Voir le détail d'un événement
+			\end{itemize}
+		
+			\subsubsection{Inscription}
+				\begin{itemize}
+					\item Créer un compte sur la plateforme
+				\end{itemize}
+			
+			\subsubsection{Profil}
+				\begin{itemize}
+					\item Afficher son profil
+					\item Modifier les informations de son profil
+				\end{itemize}
+			
+			\subsubsection{Organisations}
+				\begin{itemize}
+					\item Créer une organisation
+						\begin{itemize}
+							\item Spécifier le type
+							\item Spécifier le nom
+							\item Spécifier l'adresse
+						\end{itemize}
+					\item Afficher les informations des organisations dont un utilisateur connecté fait partie
+				\end{itemize}
+			
+			\subsubsection{Evénements}
+				\begin{itemize}
+					\item Créer un événement au nom d'une organisation dont l'utilisateur connecté fait partie
+					\begin{itemize}
+						\item Titre
+						\item Description
+						\item Prix
+						\item Lieu (Adresse ou coordonées géographiques)
+						\item Date de début
+						\item Date de fin
+						\item Horaires
+						\item Organisation
+					\end{itemize}
+					\item Modifier un événement d'une organisation dont l'utilisateur connecté fait partie
+					\item Supprimer un événement d'une organisation dont l'utilisateur connecté fait partie
+					\item Marquer un événement comme appartenant aux favoris de  l'utilisateur connecté 
+				\end{itemize}
+		
+			\subsubsection{Thèmes}
+			
+				\begin{itemize}
+					\item Ajouter des thèmes comme centre d'intérêt
+					\item Modifier ses centres d'intérêt
+				\end{itemize}
 	
+	\section{Difficultés rencontrées}
+		\subsection{Formulaires}
+			Notre application dispose de nombreux formulaires qui sont indispensables à son bon fonctionnement (inscription, connexion, création d'événements). Une des difficultées rencontrées était de gérer la validation des formulaires et leur affichage de manière évolutive. 
+			
+			Pour ce faire nous avons étudié la documentation du framework Scala Play sur la gestion des formulaires. Cela nous a pris beaucoup de temps, mais comme cela est visible dans notre code source, le résultat en valait la peine, car cela permet de valider chaque soumission de formulaire en le comparant à un modèle pré-défini sans avoir à vérifier chaque champ à la main. 
+			
+			Cela nous a quand même pris un temps certain pour comprendre comment le faire, comme avec toute nouvelle technologie.
+			
+		\subsection{Apprentissage de la technologie}
+			Scala Play Framework est un framework très puissant et très utile pour créer des applications Web ou des APIs REST. Cependant sa courbe d'apprentissage nous a semblé très élevée en début de projet. Il nous a fallu beaucoup de lecture et de temps pour comprendre correctement les concepts du framework (ou du langage Scala que nous avons découvert avec ce projet) tels que la gestion des requêtes asynchrones avec \textit{Async}, \textit{Future} \textit{Map} et la validation des formulaires.
+			
+	\section{Conclusion}
+		Nous sommes globalement satisfait de ce projet et de la façon dont nous avons géré le développement. Nous n'avons pas implémenté toutes les fonctionnalités du cahier des charges, mais la majorité des fonctionnalités prioritaires ont été fournies. Etant donné le temps à disposition pour ce projet et la difficulté d'apprentissage du framework Play (comme avec tout framework aussi complet), nous pensons avoir atteint les objectifs de ce travail. 
+		
 \end{document}
