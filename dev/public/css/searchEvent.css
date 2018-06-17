@@ -1,0 +1,15 @@
+#filterEvent label {
+    color: white;
+    font-weight: bold;
+}
+
+#filterEvent #date_field, #filterEvent #endDate_field {
+    display: none;
+}
+#filterEvent.open #date_field, #filterEvent.open #endDate_field {
+    display: block;
+}
+
+#filterEvent .search-type-selection {
+    margin: 20px 0;
+}
