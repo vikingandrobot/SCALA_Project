@@ -15,7 +15,7 @@ object SearchForm {
   // Set form structure
   val form: Form[SearchData] = Form(
     mapping(
-      "id" -> optional(text),
+      "location" -> optional(text),
       "date" -> optional(date),
       "endDate" -> optional(date)
     )(SearchData.apply)(SearchData.unapply)

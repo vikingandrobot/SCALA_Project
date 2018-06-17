@@ -1,6 +1,9 @@
 package dao
 
 import java.sql.Timestamp
+import java.util.Date
+
+import akka.http.scaladsl.model.headers.Date
 
 import scala.concurrent.Future
 import javax.inject.{Inject, Singleton}
@@ -10,6 +13,7 @@ import play.api.db.slick.HasDatabaseConfigProvider
 import slick.jdbc.JdbcProfile
 
 import scala.concurrent.ExecutionContext
+import scala.reflect.internal.util.TableDef.Column
 
 
 trait EventComponent {
@@ -63,9 +67,16 @@ class EventDAO @Inject()(protected val dbConfigProvider: DatabaseConfigProvider)
   }
 
   /** Retrieve the list of event with organization */
-  def listEventsWithOrganization(): Future[Seq[(Event, Organization)]] = {
+  def listEventsWithOrganization(location:Option[String] = None, date:Option[java.util.Date] = None, endDate:Option[java.util.Date] = None): Future[Seq[(Event, Organization)]] = {
+
+    val eventQuery = events.filter { event =>
+      List(
+        location.map(event.region === _) // not a condition as `criteriaRoast` evaluates to `None`
+      ).collect({case Some(criteria)  => criteria}).reduceLeftOption(_ || _).getOrElse(slick.lifted.LiteralColumn(true))
+    }
+
     val query = for {
-      e <- events join organization on (_.organizationId === _.id)
+      e <- eventQuery join organization on (_.organizationId === _.id)
     } yield (e._1, e._2)
 
     db.run(query.result)
