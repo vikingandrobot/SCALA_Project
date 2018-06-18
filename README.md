@@ -16,7 +16,7 @@ The source code (Scala Play project) can be found in the [dev](./dev) folder.
 
 ### Database inside Docker
 
-To deploy the application please travel to the [dev/docker](./dev/docker) folder and run:
+To deploy the database please travel to the [dev/docker](./dev/docker) folder and run:
 
 ```
 docker-compose up --build
