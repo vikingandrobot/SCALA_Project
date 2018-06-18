@@ -1,10 +1,11 @@
 package controllers
 
 import java.sql.Timestamp
+import java.util.Date
 
 import dao.{EventDAO, OrganizationDAO, UserDAO, UserOrganizationDAO}
 import javax.inject.{Inject, Singleton}
-import models.{Event, EventData, EventForm, User}
+import models._
 import play.api.mvc.{AbstractController, ControllerComponents}
 
 import scala.concurrent.ExecutionContext.Implicits.global
@@ -21,10 +22,26 @@ class EventController @Inject()(cc: ControllerComponents, eventDAO: EventDAO, or
   private val postEditEventUrl = routes.EventController.eventEdit()
 
 
-  def eventPage = Action.async { implicit request =>
-    for {
-      e <- eventDAO.listEventsWithOrganization()
-    } yield Ok(views.html.events(e))
+  def eventPage() = Action.async { implicit request =>
+
+    SearchForm.form.bindFromRequest.fold(
+
+      // On fail return the form with errors
+      formWithErrors => {
+        println(formWithErrors.errors.toString())
+        for {
+          e <- eventDAO.listEventsWithOrganization()
+        } yield Ok(views.html.events(SearchForm.form, routes.EventController.eventPage(), e))
+      },
+
+      // On success
+      formData => {
+        println(formData.location)
+        for {
+          e <- eventDAO.listEventsWithOrganization(formData.location, formData.date, formData.endDate)
+        } yield Ok(views.html.events(SearchForm.form, routes.EventController.eventPage(), e))
+      }
+    )
   }
 
 
@@ -278,7 +295,7 @@ class EventController @Inject()(cc: ControllerComponents, eventDAO: EventDAO, or
       case None =>
         for {
           e <- eventDAO.listEventsWithOrganization()
-        } yield Ok(views.html.events(e))
+        } yield Ok(views.html.events(SearchForm.form, routes.EventController.eventPage(), e))
     }
   }
 

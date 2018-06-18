@@ -1,4 +1,6 @@
-@(events: Seq[(Event, Organization)])(implicit request: play.api.mvc.RequestHeader)
+@import b4._
+
+@(form: Form[models.SearchData], getUrl: Call, events: Seq[(Event, Organization)])(implicit request: play.api.mvc.RequestHeader, messagesProvider: MessagesProvider)
 
 @main("Events") {
 
@@ -12,13 +14,18 @@
                 </div>
 
                 <div class="row justify-content-center">
-                    <div class="col-md-6">
-                        <form class="searchLocation" method="GET" action="/events">
-                            <div class="form-group">
-                                <input type="text" name="city" class="form-control" id="searchLocation"  placeholder="Cherchez dans votre ville...">
-                            </div>
-                            <button type="submit" class="float-right btn btn-primary">Rechercher</button>
-                        </form>
+                    <div id="filterEvent" class="col-md-6 searchLocation">
+                        <div class="search-type-selection btn btn-secondary">
+                            Advanced search...
+                        </div>
+                        @b4.vertical.formCSRF(getUrl) { implicit vfc =>
+
+                            @b4.text( form("location"), '_label -> "City")
+                            @b4.date( form("date"), '_label -> "Start date" )
+                            @b4.date( form("endDate"), '_label -> "End date" )
+
+                            @b4.submit('class -> "btn btn-success"){ Search }
+                        }
                     </div>
                 </div>
             </div>
