@@ -71,8 +71,8 @@ class EventDAO @Inject()(protected val dbConfigProvider: DatabaseConfigProvider)
 
     val eventQuery = events.filter { event =>
       List(
-        location.map(event.region === _) // not a condition as `criteriaRoast` evaluates to `None`
-      ).collect({case Some(criteria)  => criteria}).reduceLeftOption(_ || _).getOrElse(slick.lifted.LiteralColumn(true))
+        location.map(event.region === _)
+      ).collect({case Some(criteria)  => criteria}).reduceLeftOption(_ && _).getOrElse(slick.lifted.LiteralColumn(true))
     }
 
     val query = for {
