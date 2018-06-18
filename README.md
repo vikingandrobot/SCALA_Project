@@ -26,7 +26,7 @@ This will run a MySQL container with sample data for the application and a PHPMy
 
 The containers will be accessible at:
 
-- MySQL: http://localhost:3306
+- MySQL port: 3306
 - PHPMyAdmin: http://localhost:6060 (user and password: root/root)
 
 Please refer to the corresponding Dockerfiles for more information.
