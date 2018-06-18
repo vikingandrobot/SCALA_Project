@@ -1,6 +1,7 @@
 package dao
 
 import java.sql.Timestamp
+import java.text.SimpleDateFormat
 import java.util.Date
 
 import akka.http.scaladsl.model.headers.Date
@@ -68,10 +69,12 @@ class EventDAO @Inject()(protected val dbConfigProvider: DatabaseConfigProvider)
 
   /** Retrieve the list of event with organization */
   def listEventsWithOrganization(location:Option[String] = None, date:Option[java.util.Date] = None, endDate:Option[java.util.Date] = None): Future[Seq[(Event, Organization)]] = {
-
+    val f = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
     val eventQuery = events.filter { event =>
       List(
-        location.map(event.region === _)
+        location.map(event.region === _),
+        date.map(d => event.endDate >= Timestamp.valueOf(f.format(d))),
+        endDate.map(d => event.startDate <= Timestamp.valueOf(f.format(d)))
       ).collect({case Some(criteria)  => criteria}).reduceLeftOption(_ && _).getOrElse(slick.lifted.LiteralColumn(true))
     }
 
